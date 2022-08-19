@@ -2,7 +2,7 @@ var audioContext      = null;
 var unlocked          = false;
 var isPlaying         = false;
 var current16thNote   = 0;
-var tempo             = 120.0;
+var tempo             = 60.0;
 var lookahead         = 25.0;
 var scheduleAheadTime = 0.1
 var nextNoteTime      = 0.0;
@@ -44,22 +44,10 @@ function nextNote() {
 }
 
 function scheduleNote( beatNumber, time ) {
-  // var osc = audioContext.createOscillator();
-  // osc.connect( audioContext.destination );
-
-  // if (beatNumber % 16 === 0)
-  //   osc.frequency.value = 880.0;
-  // else if (beatNumber % 4 === 0 )
-  //   osc.frequency.value = 440.0;
-  // else
-  //   osc.frequency.value = 220.0;
-
-  // osc.start( time );
-  // osc.stop( time + noteLength );
-  var source = audioContext.createBufferSource(); // creates a sound source
-  source.buffer = woodblock;                    // tell the source which sound to play
-  source.connect(audioContext.destination);       // connect the source to the context's destination (the speakers)
-  source.start(time);                          // play the source now
+  var source = audioContext.createBufferSource();
+  source.buffer = woodblock;
+  source.connect(audioContext.destination);
+  source.start(time);
   source.stop( time + noteLength );
 }
 
@@ -88,6 +76,16 @@ function init(){
   worker = new Worker('js/worker.js');
 
   loadSound("sounds/woodblock.ogg");
+
+
+  var tempoSlider = document.getElementById("tempo-slider");
+  var tempoDisplay = document.getElementById("tempo-display");
+  tempoDisplay.innerHTML = tempoSlider.value;
+
+  tempoSlider.oninput = function() {
+    tempo             = this.value;
+    tempoDisplay.innerHTML  = this.value;
+  }
 
   worker.onmessage = function(e) {
     if (e.data == "tick")

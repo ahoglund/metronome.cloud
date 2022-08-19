@@ -8,10 +8,17 @@
     <script src="js/metronome.js"></script>
   </head>
   <body>
+    <div id="main-wrapper">
+      <p>Metronome</p>
 
-    <p>Metronome</p>
+      <div><a class="play button" onclick="this.innerText = play();">play</a></div>
 
-    <div><a class="play" onclick="this.innerText = play();">play</a></div>
+      <div class="tempo-slider-container">
+        <input type="range" min="10" max="400" value="60" class="slider" id="tempo-slider">
+      </div>
 
+      <div class="tempo-display-container">
+        <p id="tempo-display">60</p>
+    </div>
   </body>
 </html>
