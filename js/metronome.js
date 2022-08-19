@@ -8,6 +8,7 @@ var scheduleAheadTime = 0.1
 var nextNoteTime      = 0.0;
 var noteLength        = 0.05;
 var worker            = null;
+var woodblock         = null;
 
 function play() {
   if (!unlocked) {
@@ -43,18 +44,23 @@ function nextNote() {
 }
 
 function scheduleNote( beatNumber, time ) {
-  var osc = audioContext.createOscillator();
-  osc.connect( audioContext.destination );
+  // var osc = audioContext.createOscillator();
+  // osc.connect( audioContext.destination );
 
-  if (beatNumber % 16 === 0)
-    osc.frequency.value = 880.0;
-  else if (beatNumber % 4 === 0 )
-    osc.frequency.value = 440.0;
-  else
-    osc.frequency.value = 220.0;
+  // if (beatNumber % 16 === 0)
+  //   osc.frequency.value = 880.0;
+  // else if (beatNumber % 4 === 0 )
+  //   osc.frequency.value = 440.0;
+  // else
+  //   osc.frequency.value = 220.0;
 
-  osc.start( time );
-  osc.stop( time + noteLength );
+  // osc.start( time );
+  // osc.stop( time + noteLength );
+  var source = audioContext.createBufferSource(); // creates a sound source
+  source.buffer = woodblock;                    // tell the source which sound to play
+  source.connect(audioContext.destination);       // connect the source to the context's destination (the speakers)
+  source.start(time);                          // play the source now
+  source.stop( time + noteLength );
 }
 
 function scheduler() {
@@ -64,10 +70,24 @@ function scheduler() {
   }
 }
 
+function loadSound(url) {
+  var request = new XMLHttpRequest();
+  request.open("GET", url, true);
+  request.responseType = "arraybuffer";
+  request.onload = function() {
+    audioContext.decodeAudioData(request.response, function(buffer) {
+      woodblock = buffer;
+    });
+  }
+  request.send();
+}
+
 function init(){
   var AudioContext = window.AudioContext || window.webkitAudioContext;
   audioContext = new AudioContext();
   worker = new Worker('js/worker.js');
+
+  loadSound("sounds/woodblock.ogg");
 
   worker.onmessage = function(e) {
     if (e.data == "tick")
