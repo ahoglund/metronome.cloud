@@ -1,55 +1,68 @@
 var isPlaying          = false;
 var lookahead          = 25.0;
 var scheduleAheadTime  = 0.1;
-var nextNoteTime       = 0.0;
+var nextTickTime       = 0.0;
 var tempo              = null;
 var worker             = null;
 var woodblock          = null;
 var beatsPerBar        = null;
 var beatType           = null;
 var currentBeat        = 0;
-var  currentBeatDisplay = null;
+var subdivision        = null;
+var currentSubdivision = 0;
+
+function resetPlayback() {
+  currentBeat = 0;
+  isPlaying   = false;
+}
 
 function toggle() {
   isPlaying = !isPlaying;
 
   if (isPlaying) {
-    nextNoteTime = audioContext.currentTime;
+    nextTickTime = audioContext.currentTime;
     worker.postMessage("start");
     return "STOP";
   } else {
-    currentBeat = 0;
+    resetPlayback();
     worker.postMessage("stop");
     return "START";
   }
 }
 
-function nextNote() {
-  currentBeat++;
-  nextNoteTime += 60.0 / tempo;
+function nextTick() {
+  nextTickTime += 60.0 / (tempo * subdivision);
+
+  if (++currentSubdivision % subdivision == 0) {
+    currentSubdivision = 0;
+    currentBeat++;
+  }
 
   if (currentBeat % beatsPerBar == 0) {
     currentBeat = 0;
   }
-  currentBeatDisplay.innerHTML = currentBeat;
 }
 
-function scheduleNote(time) {
+function scheduleTick(time) {
   var source = audioContext.createBufferSource();
   source.buffer = woodblock;
-  if(currentBeat % beatsPerBar == 0) {
-    source.playbackRate.value = 1.1;
+
+  if (currentBeat == 0 && currentSubdivision == 0) {
+    source.playbackRate.value = 1.2;
+  } else if (currentSubdivision == 0) {
+    source.playbackRate.value = 1.0;
   } else {
-    source.playbackRate.value = 1;
+    source.playbackRate.value = 0.8;
   }
+
   source.connect(audioContext.destination);
   source.start(time);
 }
 
 function scheduler() {
-  while (nextNoteTime < audioContext.currentTime + scheduleAheadTime ) {
-    scheduleNote(nextNoteTime);
-    nextNote();
+  while (nextTickTime < audioContext.currentTime + scheduleAheadTime ) {
+    scheduleTick(nextTickTime);
+    nextTick();
   }
 }
 
@@ -88,15 +101,20 @@ function init(){
   }
 
   var beatPerBarDisplay  = document.getElementById("beat-per-bar-display");
-  var beatTypeDisplay    = document.getElementById("beat-type-display");
-  currentBeatDisplay = document.getElementById("current-beat");
+  // var beatTypeDisplay    = document.getElementById("beat-type-display");
+  var subdivisionDisplay = document.getElementById("subdivision-display");
 
   beatPerBarDisplay.oninput = function() {
     beatsPerBar = this.value;
   }
 
+  subdivisionDisplay.oninput = function() {
+    subdivision = this.value;
+  }
+
+  subdivision = subdivisionDisplay.value;
   beatsPerBar = beatPerBarDisplay.value;
-  beatType    = beatTypeDisplay.value;
+  // beatType    = beatTypeDisplay.value;
 
   worker.onmessage = function(e) {
     if (e.data == "tick")
