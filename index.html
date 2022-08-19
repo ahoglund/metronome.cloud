@@ -11,7 +11,9 @@
     <div id="main-wrapper">
       <h3>CLOUD METRONOME</h3>
 
-      <button class="play" type="button" onclick="this.innerText = toggle();">START</button>
+      <div class="toggle-container">
+        <button class="toggle" type="button" id="toggle-button">START</button>
+      </div>
 
       <div class="tempo-slider-container">
         <input type="range" min="10" max="400" value="60" class="slider" id="tempo-slider">
@@ -19,6 +21,14 @@
 
       <div class="tempo-display-container">
         <p id="tempo-display">60</p>
+      </div>
+
+      <div class="time-signature-container">
+        <input type="text" id="beat-per-bar-display" value="4"></input>
+        <input type="text" id="beat-type-display" value="4"></input>
+      </div>
+
+      <p id="current-beat">0</p>
     </div>
   </body>
 </html>
