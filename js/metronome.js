@@ -1,59 +1,42 @@
 var audioContext      = null;
-var unlocked          = false;
 var isPlaying         = false;
-var current16thNote   = 0;
 var tempo             = 60.0;
 var lookahead         = 25.0;
+var currentTick       = 0;
 var scheduleAheadTime = 0.1
 var nextNoteTime      = 0.0;
 var noteLength        = 0.05;
 var worker            = null;
 var woodblock         = null;
 
-function play() {
-  if (!unlocked) {
-    // play silent buffer to unlock the audio
-    var buffer = audioContext.createBuffer(1, 1, 22050);
-    var node = audioContext.createBufferSource();
-    node.buffer = buffer;
-    node.start(0);
-    unlocked = true;
-  }
-
+function toggle() {
   isPlaying = !isPlaying;
 
   if (isPlaying) {
-    current16thNote = 0;
     nextNoteTime = audioContext.currentTime;
     worker.postMessage("start");
-    return "stop";
+    return "STOP";
   } else {
     worker.postMessage("stop");
-    return "play";
+    return "START";
   }
 }
 
 function nextNote() {
-  var secondsPerBeat = 60.0 / tempo;
-  nextNoteTime += 0.25 * secondsPerBeat;
-
-  current16thNote++;
-  if (current16thNote == 16) {
-    current16thNote = 0;
-  }
+  nextNoteTime += 60.0 / tempo;
 }
 
-function scheduleNote( beatNumber, time ) {
+function scheduleNote(time) {
   var source = audioContext.createBufferSource();
   source.buffer = woodblock;
   source.connect(audioContext.destination);
   source.start(time);
-  source.stop( time + noteLength );
+  source.stop(time + noteLength);
 }
 
 function scheduler() {
   while (nextNoteTime < audioContext.currentTime + scheduleAheadTime ) {
-    scheduleNote( current16thNote, nextNoteTime );
+    scheduleNote(nextNoteTime);
     nextNote();
   }
 }
