@@ -108,7 +108,7 @@ function init(){
 
   tempoSlider.oninput = function() {
     tempo = this.value;
-    tempoDisplay.innerHTML = this.value;
+    tempoDisplay.value = this.value;
   }
 
   var beatPerBarDisplay  = document.getElementById("beat-per-bar-display");
