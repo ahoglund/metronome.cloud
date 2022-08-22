@@ -102,3 +102,39 @@ footer {
   float: left;
   width: 50%;
 }
+
+#tempo-slider {
+  width: 100%;
+}
+
+.slider {
+  -webkit-appearance: none;
+  width: 100%;
+  height: 23px;
+  background: black;
+  outline: none;
+  opacity: 1;
+  -webkit-transition: .2s;
+  transition: opacity .2s;
+  border: 0px;
+}
+
+.slider:hover {
+  opacity: 0.8;
+}
+
+.slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 23px;
+  height: 23px;
+  background: red;
+  cursor: pointer;
+}
+
+.slider::-moz-range-thumb {
+  width: 23px;
+  height: 23px;
+  background: red;
+  cursor: pointer;
+}
