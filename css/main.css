@@ -3,6 +3,10 @@
   width: 760px;
 }
 
-.tempo-slider-container{
+.tempo-slider-container {
+  width: 100%;
+}
+
+#tempo-slider {
   width: 100%;
 }

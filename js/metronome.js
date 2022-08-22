@@ -2,6 +2,7 @@ var isPlaying          = false;
 var lookahead          = 25.0;
 var scheduleAheadTime  = 0.1;
 var nextTickTime       = 0.0;
+var gainNode           = null;
 var tempo              = null;
 var worker             = null;
 var woodblock          = null;
@@ -48,14 +49,18 @@ function scheduleTick(time) {
   source.buffer = woodblock;
 
   if (currentBeat == 0 && currentSubdivision == 0) {
+    gainNode.gain.setValueAtTime(1, time);
     source.playbackRate.value = 1.2;
   } else if (currentSubdivision == 0) {
+    gainNode.gain.setValueAtTime(0.5, time);
     source.playbackRate.value = 1.0;
   } else {
+    gainNode.gain.setValueAtTime(0.1, time);
     source.playbackRate.value = 0.8;
   }
 
-  source.connect(audioContext.destination);
+  source.connect(gainNode);
+  gainNode.connect(audioContext.destination);
   source.start(time);
 }
 
@@ -81,6 +86,7 @@ function loadSound(url) {
 function init(){
   var AudioContext = window.AudioContext || window.webkitAudioContext;
   audioContext = new AudioContext();
+  gainNode = audioContext.createGain();
   worker = new Worker('js/worker.js');
 
   loadSound("sounds/woodblock.ogg");
@@ -94,6 +100,11 @@ function init(){
   var tempoSlider        = document.getElementById("tempo-slider");
   tempo = tempoSlider.value;
   tempoDisplay.innerHTML = tempoSlider.value;
+
+  tempoDisplay.oninput = function() {
+    tempo = this.value;
+    tempoSlider.value = this.value;
+  }
 
   tempoSlider.oninput = function() {
     tempo = this.value;
