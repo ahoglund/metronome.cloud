@@ -96,10 +96,11 @@ function init(){
     this.innerHTML = toggle();
   });
 
-  var tempoDisplay       = document.getElementById("tempo-display");
-  var tempoSlider        = document.getElementById("tempo-slider");
-  tempo = tempoSlider.value;
-  tempoDisplay.innerHTML = tempoSlider.value;
+  var tempoDisplay         = document.getElementById("tempo-display");
+  var timeSignatureDisplay = document.getElementById("time-signature-display");
+  var tempoSlider          = document.getElementById("tempo-slider");
+  tempo                    = tempoSlider.value;
+  tempoDisplay.innerHTML   = tempoSlider.value;
 
   tempoDisplay.oninput = function() {
     tempo = this.value;
@@ -112,11 +113,16 @@ function init(){
   }
 
   var beatPerBarDisplay  = document.getElementById("beat-per-bar-display");
-  // var beatTypeDisplay    = document.getElementById("beat-type-display");
+  var beatTypeDisplay    = document.getElementById("beat-type-display");
   var subdivisionDisplay = document.getElementById("subdivision-display");
+
+  beatTypeDisplay.oninput = function() {
+    timeSignatureDisplay.innerHTML = beatPerBarDisplay.value + "/" + this.value;
+  }
 
   beatPerBarDisplay.oninput = function() {
     beatsPerBar = this.value;
+    timeSignatureDisplay.innerHTML = this.value + "/" + beatTypeDisplay.value;
   }
 
   subdivisionDisplay.oninput = function() {

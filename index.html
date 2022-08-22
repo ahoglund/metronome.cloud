@@ -9,23 +9,39 @@
   </head>
   <body>
     <div id="main-wrapper">
-      <h3>CLOUD METRONOME</h3>
 
-      <div class="toggle-container">
+      <h3>Metronome</h3>
+
+      <div class="box-50">
         <button class="toggle" type="button" id="toggle-button">START</button>
       </div>
 
-      <div class="tempo-slider-container">
+      <div class="box-50">
+        <h4>Time Signature: <span id="time-signature-display">4/4</span></h4>
+      </div>
+
+      <div class="box-100">
+        <label for="tempo-slider">Tempo</label>
         <input type="range" min="10" max="400" value="60" class="slider" id="tempo-slider">
       </div>
 
-      <div class="tempo-display-container">
+      <div class="box-50">
+        <label for="tempo-display">Tempo</label>
         <input type="text" id="tempo-display" value="60"></input>
       </div>
 
-      <div class="time-signature-container">
+      <div class="box-50">
+        <label for="beat-per-bar-display">Beats Per Bar</label>
         <input type="text" id="beat-per-bar-display" value="4"></input>
+      </div>
+
+      <div class="box-50">
+        <label for="beat-type-display">Beats Type</label>
         <input type="text" id="beat-type-display" value="4"></input>
+      </div>
+
+      <div class="box-50">
+        <label for="subdivision-display">Subdivision</label>
         <input type="text" id="subdivision-display" value="1"></input>
       </div>
     </div>
