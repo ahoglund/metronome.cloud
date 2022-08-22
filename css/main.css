@@ -77,7 +77,7 @@ button {
 }
 
 button:hover {
-  background: blue;
+  background: red;
   color: white;
 }
 
