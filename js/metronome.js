@@ -92,9 +92,16 @@ function init(){
   loadSound("sounds/woodblock.ogg");
 
   var toggleButton = document.getElementById("toggle-button");
+
   toggleButton.addEventListener("click", function() {
     this.innerHTML = toggle();
-  });
+  }, false);
+
+  window.onkeypress = function(event) {
+    if (event.keyCode == 32) {
+      toggleButton.innerHTML = toggle();
+    }
+  };
 
   var tempoDisplay         = document.getElementById("tempo-display");
   var timeSignatureDisplay = document.getElementById("time-signature-display");
