@@ -4,6 +4,9 @@ var scheduleAheadTime  = 0.1;
 var nextTickTime       = 0.0;
 var gainNode           = null;
 var tempo              = null;
+var tempoDisplay       = null;
+var tempoSlider        = null;
+var tapDisplay         = null;
 var worker             = null;
 var woodblock          = null;
 var beatsPerBar        = null;
@@ -11,6 +14,9 @@ var beatType           = null;
 var currentBeat        = 0;
 var subdivision        = null;
 var currentSubdivision = 0;
+let tapTempoBuffer     = [];
+let timer              = undefined;
+let tapTimerTimeout    = 2000;
 
 function resetPlayback() {
   currentBeat = 0;
@@ -83,6 +89,72 @@ function loadSound(url) {
   request.send();
 }
 
+function initToggleButton() {
+  var toggleButton = document.getElementById("toggle-button");
+
+  toggleButton.addEventListener("click", function() {
+    this.innerHTML = toggle();
+  }, false);
+
+  window.onkeydown = function(event) {
+    if (event.keyCode == 32) {
+      event.preventDefault();
+      toggleButton.innerHTML = toggle();
+    }
+  };
+}
+
+function resetTimer() {
+  timer = undefined;
+}
+
+function resetTimerAndClearBuffer() {
+  resetTimer();
+  tapTempoBuffer = [];
+  tapDisplay.innerHTML = "Type 't' to set tempo";
+}
+
+function initTapTempo() {
+  onkeydown = function(event) {
+    if (event.keyCode == 84) {
+      event.preventDefault();
+
+      var currentTime = Date.now();
+      clearTimeout(timer);
+      nextIndex = tapTempoBuffer.length;
+
+      if (timer == undefined) {
+        timer = setTimeout(resetTimerAndClearBuffer, tapTimerTimeout);
+        tapTempoBuffer[nextIndex] = currentTime;
+        tapDisplay.innerHTML = "Keep tapping...";
+      } else {
+        timer = setTimeout(resetTimerAndClearBuffer, tapTimerTimeout);
+
+        if (tapTempoBuffer.length > 3) {
+          tapTempoBuffer.shift();
+          calculateTempo();
+        } else {
+          tapDisplay.innerHTML = "Keep tapping...";
+        }
+
+        tapTempoBuffer.push(currentTime);
+      }
+    }
+  }
+}
+
+function calculateTempo() {
+  var averageTime = 0;
+  for (var i = 0; i < tapTempoBuffer.length - 1; i++) {
+    averageTime += tapTempoBuffer[i + 1] - tapTempoBuffer[i];
+  }
+
+  averageTime /= tapTempoBuffer.length - 1;
+  tempo = Math.round(60000 / averageTime);
+  tempoDisplay.value = tempo;
+  tempoSlider.value = tempo;
+}
+
 function init(){
   var AudioContext = window.AudioContext || window.webkitAudioContext;
   audioContext = new AudioContext();
@@ -91,21 +163,12 @@ function init(){
 
   loadSound("sounds/woodblock.ogg");
 
-  var toggleButton = document.getElementById("toggle-button");
+  initToggleButton();
 
-  toggleButton.addEventListener("click", function() {
-    this.innerHTML = toggle();
-  }, false);
-
-  window.onkeypress = function(event) {
-    if (event.keyCode == 32) {
-      toggleButton.innerHTML = toggle();
-    }
-  };
-
-  var tempoDisplay         = document.getElementById("tempo-display");
+  tempoDisplay             = document.getElementById("tempo-display");
+  tapDisplay               = document.getElementById("tap-display");
   var timeSignatureDisplay = document.getElementById("time-signature-display");
-  var tempoSlider          = document.getElementById("tempo-slider");
+  tempoSlider              = document.getElementById("tempo-slider");
   tempo                    = tempoSlider.value;
   tempoDisplay.innerHTML   = tempoSlider.value;
 
@@ -118,6 +181,8 @@ function init(){
     tempo = this.value;
     tempoDisplay.value = this.value;
   }
+
+  initTapTempo();
 
   var beatPerBarDisplay  = document.getElementById("beat-per-bar-display");
   var beatTypeDisplay    = document.getElementById("beat-type-display");
