@@ -1,3 +1,8 @@
+var AudioContext = window.AudioContext || window.webkitAudioContext;
+var audioContext = new AudioContext();
+
+import { BufferLoader } from './buffer-loader.js';
+
 var isPlaying          = false;
 var lookahead          = 25.0;
 var scheduleAheadTime  = 0.1;
@@ -77,16 +82,12 @@ function scheduler() {
   }
 }
 
-function loadSound(url) {
-  var request = new XMLHttpRequest();
-  request.open("GET", url, true);
-  request.responseType = "arraybuffer";
-  request.onload = function() {
-    audioContext.decodeAudioData(request.response, function(buffer) {
-      woodblock = buffer;
-    });
-  }
-  request.send();
+function initSounds(audioContext, urls) {
+  var bufferLoader = new BufferLoader(audioContext, urls, function(bufferList) {
+    woodblock = bufferList[0];
+  });
+
+  bufferLoader.load();
 }
 
 function initToggleButton() {
@@ -155,13 +156,11 @@ function calculateTempo() {
   tempoSlider.value = tempo;
 }
 
-function init(){
-  var AudioContext = window.AudioContext || window.webkitAudioContext;
-  audioContext = new AudioContext();
+function init() {
   gainNode = audioContext.createGain();
   worker = new Worker('js/worker.js');
 
-  loadSound("sounds/woodblock.ogg");
+  initSounds(audioContext, ["sounds/woodblock.ogg"]);
 
   initToggleButton();
 
@@ -215,4 +214,4 @@ function init(){
   worker.postMessage({"interval":lookahead});
 }
 
-window.addEventListener("load", init );
+window.addEventListener("load", init() );

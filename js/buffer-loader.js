@@ -22,7 +22,7 @@ BufferLoader.prototype.load_buffer = function(url, index) {
           return;
         }
 
-        this.bufferList[index] = buffer;
+        loader.bufferList[index] = buffer;
         if(++loader.loadCount == loader.urlList.length)
           loader.onload(loader.bufferList);
       }
@@ -41,3 +41,5 @@ BufferLoader.prototype.load = function() {
     this.load_buffer(this.urlList[i], i);
   }
 }
+
+export { BufferLoader };
