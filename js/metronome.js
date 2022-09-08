@@ -122,7 +122,7 @@ function initTapTempo() {
 
       var currentTime = Date.now();
       clearTimeout(timer);
-      nextIndex = tapTempoBuffer.length;
+      var nextIndex = tapTempoBuffer.length;
 
       if (timer == undefined) {
         timer = setTimeout(resetTimerAndClearBuffer, tapTimerTimeout);
