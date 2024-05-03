@@ -29,7 +29,7 @@ input, select {
   border: none;
   border-bottom: 2px solid #444;
   font-weight: bold;
-  width: 180px;
+  width: 40px;
   font-size: inherit;
   margin-bottom: 24px;
 }
@@ -71,9 +71,14 @@ button {
   text-transform: uppercase;
   cursor: pointer;
   height: 40px;
-  min-width: 100px;
+  min-width: 10px;
   vertical-align: middle;
   margin-top: 8px;
+}
+
+button:active {
+  background: blue;
+  color: white;
 }
 
 button:hover {

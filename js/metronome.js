@@ -8,14 +8,13 @@ var lookahead          = 25.0;
 var scheduleAheadTime  = 0.1;
 var nextTickTime       = 0.0;
 var gainNode           = null;
-var tempo              = null;
+var tempo              = 60;
 var tempoDisplay       = null;
 var tempoSlider        = null;
 var tapDisplay         = null;
 var worker             = null;
 var woodblock          = null;
 var beatsPerBar        = null;
-var beatType           = null;
 var currentBeat        = 0;
 var subdivision        = null;
 var currentSubdivision = 0;
@@ -90,6 +89,24 @@ function initSounds(audioContext, urls) {
   bufferLoader.load();
 }
 
+function initTempoDownButton() {
+  var toggleButton = document.getElementById("tempo-down-button");
+  toggleButton.addEventListener("click", function() {
+    tempo = tempo - 1;
+    tempoDisplay.value = tempo;
+    tempoSlider.value = tempo;
+  }, false);
+}
+
+function initTempoUpButton() {
+  var toggleButton = document.getElementById("tempo-up-button");
+  toggleButton.addEventListener("click", function() {
+    tempo = tempo + 1;
+    tempoDisplay.value = tempo;
+    tempoSlider.value = tempo;
+  }, false);
+}
+
 function initToggleButton() {
   var toggleButton = document.getElementById("toggle-button");
 
@@ -157,6 +174,7 @@ function calculateTempo() {
 }
 
 function init() {
+  console.log("Init...");
   gainNode = audioContext.createGain();
   worker = new Worker('js/worker.js');
 
@@ -168,7 +186,7 @@ function init() {
   tapDisplay               = document.getElementById("tap-display");
   var timeSignatureDisplay = document.getElementById("time-signature-display");
   tempoSlider              = document.getElementById("tempo-slider");
-  tempo                    = tempoSlider.value;
+  tempo                    = parseInt(tempoSlider.value);
   tempoDisplay.innerHTML   = tempoSlider.value;
 
   tempoDisplay.oninput = function() {
@@ -182,6 +200,8 @@ function init() {
   }
 
   initTapTempo();
+  initTempoUpButton();
+  initTempoDownButton();
 
   var beatPerBarDisplay  = document.getElementById("beat-per-bar-display");
   var beatTypeDisplay    = document.getElementById("beat-type-display");
