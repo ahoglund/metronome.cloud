@@ -42,8 +42,8 @@ body {
 
 .metronome-icon {
   position: relative;
-  width: 40px;
-  height: 40px;
+  width: 50px;
+  height: 50px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -53,24 +53,26 @@ body {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   grid-template-rows: repeat(3, 1fr);
-  gap: 2px;
-  width: 30px;
-  height: 30px;
+  gap: 3px;
+  width: 36px;
+  height: 36px;
 }
 
 .grid-square {
-  background: var(--text-primary, #ffffff);
-  border-radius: 1px;
+  background: #ffffff;
+  border-radius: 2px;
   transition: all 0.3s ease;
+  min-height: 8px;
+  min-width: 8px;
 }
 
 .grid-square.accent {
-  background: var(--accent-primary, #ff6b35);
+  background: #ff6b35;
 }
 
 .grid-square.empty {
   background: transparent;
-  border: 1px solid var(--accent-border, #444444);
+  border: 1px solid #444444;
 }
 
 .logo-text {
@@ -81,17 +83,18 @@ body {
 }
 
 .brand-name {
-  font-size: 28px;
+  font-size: 24px;
   font-weight: 700;
-  color: var(--text-primary, #ffffff);
+  color: #ffffff;
   letter-spacing: -0.5px;
   margin: 0;
+  line-height: 1.1;
 }
 
 .brand-domain {
-  font-size: 12px;
+  font-size: 14px;
   font-weight: 400;
-  color: var(--accent-primary, #ff6b35);
+  color: #ff6b35;
   margin: 2px 0 0 0;
   letter-spacing: 0.5px;
 }

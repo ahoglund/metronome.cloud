@@ -3,88 +3,90 @@
   <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Metronome</title>
+    <title>metronome.cloud - Polyrhythmic Metronome</title>
+    <link rel="stylesheet" href="css/components.css">
     <link rel="stylesheet" href="css/main.css">
-    <script type="module" src="js/metronome.js"></script>
+    <script type="module" src="js/polyrhythmic-metronome.js"></script>
   </head>
   <body>
-    <div id="main-wrapper">
+    <div class="app-container">
+      
+      <!-- Global Controls -->
+      <header class="global-controls">
+        <div class="logo-header">
+          <div class="metronome-icon">
+            <div class="icon-grid">
+              <div class="grid-square"></div>
+              <div class="grid-square accent"></div>
+              <div class="grid-square"></div>
+              <div class="grid-square"></div>
+              <div class="grid-square accent"></div>
+              <div class="grid-square empty"></div>
+              <div class="grid-square"></div>
+              <div class="grid-square"></div>
+              <div class="grid-square accent"></div>
+            </div>
+          </div>
+          <div class="logo-text">
+            <h1 class="brand-name">cloud metronome</h1>
+          </div>
+        </div>
+        
+        <div class="transport-panel">
+          <div class="tempo-section">
+            <div class="tempo-knob-area">
+              <div id="tempo-knob"></div>
+            </div>
+            <div class="tempo-controls-area">
+              <div class="tempo-display-container">
+                <div id="tempo-display"></div>
+              </div>
+              <div class="tempo-buttons">
+                <button id="tempo-down-button" class="tempo-btn">-</button>
+                <button id="tempo-up-button" class="tempo-btn">+</button>
+              </div>
+            </div>
+          </div>
+          
+          <div class="transport-section">
+            <div class="main-controls">
+              <button id="toggle-button" class="play-button">
+                <span id="play-icon">▶</span>
+              </button>
+            </div>
+            <div class="secondary-controls">
+              <button id="tap-tempo-button" class="tap-button">TAP TEMPO</button>
+            </div>
+          </div>
+        </div>
+        
+      </header>
 
-      <h3>Metronome</h3>
+      <!-- Reference Track Section -->
+      <section class="reference-section">
+        <div class="section-header">
+          <div class="section-title">Reference Track</div>
+          <div class="reference-info">4/4 Time - All polyrhythms based on this</div>
+        </div>
+        
 
-      <div class="box-50">
-        <button class="toggle" type="button" id="toggle-button">START</button>
-      </div>
+        <div class="reference-track" id="reference-track">
+          <!-- Reference track will be created here -->
+        </div>
+      </section>
 
-      <div class="box-50">
-        <h4>Time Signature: <span id="time-signature-display">4/4</span></h4>
-      </div>
+      <!-- Polyrhythm Section -->
+      <main class="polyrhythm-section">
+        <div class="polyrhythm-controls">
+          <div class="section-title">Polyrhythms</div>
+          <button class="add-track-button" id="add-polyrhythm-button">+ Add Polyrhythm</button>
+        </div>
+        
+        <div class="tracks-container" id="polyrhythms-container">
+          <!-- Polyrhythm tracks will be added here dynamically -->
+        </div>
+      </main>
 
-      <div class="box-100">
-        <label for="tempo-slider">Tempo</label>
-        <input type="range" min="10" max="400" value="60" class="slider" id="tempo-slider">
-      </div>
-
-      <div class="box-50">
-        <label for="tempo-display">Tempo</label>
-        <input type="text" id="tempo-display" value="60" disabled></input>
-        <button class="tempo" type="button" id="tempo-down-button">-</button>
-        <button class="tempo" type="button" id="tempo-up-button">+</button>
-      </div>
-
-      <div class="box-50">
-        <label for="beat-per-bar-display">Beats Per Bar</label>
-        <select name="beat-type" id="beat-per-bar-display">
-          <option value="1">1</option>
-          <option value="2">2</option>
-          <option value="3">3</option>
-          <option value="4" selected>4</option>
-          <option value="5">5</option>
-          <option value="6">6</option>
-          <option value="7">7</option>
-          <option value="8">8</option>
-          <option value="9">9</option>
-          <option value="10">10</option>
-          <option value="11">11</option>
-          <option value="12">12</option>
-          <option value="13">13</option>
-        </select>
-      </div>
-
-      <div class="box-50">
-        <label for="beat-type-display">Beat Type</label>
-        <select name="beat-type" id="beat-type-display">
-          <option value="2">2</option>
-          <option value="4">4</option>
-          <option value="8">8</option>
-          <option value="16">16</option>
-          <option value="32">32</option>
-          <option value="64">64</option>
-        </select>
-      </div>
-
-      <div class="box-50">
-        <label for="subdivision-display">Subdivision</label>
-        <select name="beat-type" id="subdivision-display">
-          <option value="1" selected>1</option>
-          <option value="2">2</option>
-          <option value="3">3</option>
-          <option value="4">4</option>
-          <option value="5">5</option>
-          <option value="6">6</option>
-          <option value="7">7</option>
-          <option value="8">8</option>
-          <option value="9">9</option>
-          <option value="10">10</option>
-          <option value="11">11</option>
-          <option value="12">12</option>
-          <option value="13">13</option>
-        </select>
-      </div>
-
-      <div class="box-50">
-        <p id="tap-display">Tap "t" to set tempo</p>
-      </div>
     </div>
   </body>
 </html>
