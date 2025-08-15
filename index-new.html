@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Metronome Pro</title>
+    <link rel="stylesheet" href="css/components.css">
+    <link rel="stylesheet" href="css/main.css">
+    <script type="module" src="js/simple-metronome.js"></script>
+  </head>
+  <body>
+    <div class="app-container">
+      
+      <!-- Global Controls -->
+      <header class="global-controls">
+        <div class="title">Cloud Metronome</div>
+        
+        <div class="master-controls">
+          <div class="tempo-controls">
+            <button id="tempo-down-button">-</button>
+            <button id="tempo-up-button">+</button>
+          </div>
+          <div id="tempo-display"></div>
+        </div>
+        
+        <div class="transport-controls">
+          <button id="toggle-button" class="play-button">
+            <span id="play-icon">▶</span>
+          </button>
+          <button id="reset-button">⏹</button>
+          <button id="tap-tempo-button">TAP</button>
+        </div>
+      </header>
+
+      <!-- Polyrhythm Section -->
+      <main class="polyrhythm-section">
+        <div class="polyrhythm-controls">
+          <div class="section-title">Polyrhythm Tracks</div>
+          <button class="add-track-button" id="add-track-button">+ Add Track</button>
+        </div>
+        
+        <div class="tracks-container" id="tracks-container">
+          <!-- Polyrhythm tracks will be added here dynamically -->
+        </div>
+      </main>
+
+    </div>
+
+    <!-- Hidden original controls for fallback -->
+    <div style="display: none;">
+      <input type="range" min="10" max="400" value="60" class="slider" id="tempo-slider">
+      <input type="text" id="tempo-input" value="60">
+      <span id="tap-display">Tap "t" to set tempo</span>
+    </div>
+  </body>
+</html>

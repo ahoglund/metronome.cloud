@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Metronome.cloud Logo</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 40px;
+            background: #0a0a0a;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+            justify-content: center;
+        }
+
+        .logo-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 60px;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 24px;
+        }
+
+        .metronome-icon {
+            position: relative;
+            width: 80px;
+            height: 80px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .icon-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            grid-template-rows: repeat(3, 1fr);
+            gap: 4px;
+            width: 60px;
+            height: 60px;
+        }
+
+        .grid-square {
+            background: #ffffff;
+            border-radius: 2px;
+            transition: all 0.3s ease;
+        }
+
+        .grid-square.accent {
+            background: #ff6b35;
+        }
+
+        .grid-square.empty {
+            background: transparent;
+            border: 1px solid #333;
+        }
+
+        .logo-text {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+        }
+
+        .brand-name {
+            font-size: 48px;
+            font-weight: 700;
+            color: #ffffff;
+            letter-spacing: -1px;
+            margin: 0;
+            line-height: 1;
+        }
+
+        .brand-domain {
+            font-size: 18px;
+            font-weight: 400;
+            color: #ff6b35;
+            margin: 4px 0 0 0;
+            letter-spacing: 0.5px;
+        }
+
+        .logo-variants {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 40px;
+            width: 100%;
+            max-width: 1200px;
+        }
+
+        .variant {
+            background: #1a1a1a;
+            padding: 40px;
+            border-radius: 12px;
+            border: 1px solid #333;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .variant-title {
+            color: #888;
+            font-size: 14px;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin: 0;
+        }
+
+        .compact-logo {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .compact-logo .metronome-icon {
+            width: 40px;
+            height: 40px;
+        }
+
+        .compact-logo .icon-grid {
+            width: 30px;
+            height: 30px;
+            gap: 2px;
+        }
+
+        .compact-logo .brand-name {
+            font-size: 28px;
+        }
+
+        .compact-logo .brand-domain {
+            font-size: 12px;
+        }
+
+        .icon-only {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .horizontal-logo {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .horizontal-logo .logo-text {
+            flex-direction: row;
+            align-items: baseline;
+            gap: 8px;
+        }
+
+        .horizontal-logo .brand-name {
+            font-size: 36px;
+        }
+
+        .horizontal-logo .brand-domain {
+            font-size: 16px;
+            margin: 0;
+        }
+
+        @keyframes pulse {
+            0%, 100% { 
+                transform: scale(1);
+                opacity: 1;
+            }
+            50% { 
+                transform: scale(1.1);
+                opacity: 0.8;
+            }
+        }
+
+        .logo:hover .grid-square.accent {
+            animation: pulse 1s ease-in-out infinite;
+        }
+
+        .color-info {
+            background: #1a1a1a;
+            padding: 30px;
+            border-radius: 12px;
+            border: 1px solid #333;
+            width: 100%;
+            max-width: 600px;
+            margin-top: 40px;
+        }
+
+        .color-info h3 {
+            color: #ffffff;
+            margin: 0 0 20px 0;
+            font-size: 18px;
+        }
+
+        .color-swatches {
+            display: flex;
+            gap: 20px;
+        }
+
+        .color-swatch {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .color-circle {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            border: 2px solid #333;
+        }
+
+        .color-label {
+            color: #888;
+            font-size: 12px;
+            text-align: center;
+        }
+
+        .color-code {
+            color: #ffffff;
+            font-size: 14px;
+            font-family: 'Courier New', monospace;
+        }
+    </style>
+</head>
+<body>
+    <div class="logo-container">
+        <div class="logo">
+            <div class="metronome-icon">
+                <div class="icon-grid">
+                    <div class="grid-square"></div>
+                    <div class="grid-square accent"></div>
+                    <div class="grid-square"></div>
+                    <div class="grid-square"></div>
+                    <div class="grid-square accent"></div>
+                    <div class="grid-square empty"></div>
+                    <div class="grid-square"></div>
+                    <div class="grid-square"></div>
+                    <div class="grid-square accent"></div>
+                </div>
+            </div>
+            <div class="logo-text">
+                <h1 class="brand-name">metronome</h1>
+                <p class="brand-domain">.cloud</p>
+            </div>
+        </div>
+
+        <div class="logo-variants">
+            <div class="variant">
+                <h3 class="variant-title">Compact Version</h3>
+                <div class="compact-logo">
+                    <div class="metronome-icon">
+                        <div class="icon-grid">
+                            <div class="grid-square"></div>
+                            <div class="grid-square accent"></div>
+                            <div class="grid-square"></div>
+                            <div class="grid-square"></div>
+                            <div class="grid-square accent"></div>
+                            <div class="grid-square empty"></div>
+                            <div class="grid-square"></div>
+                            <div class="grid-square"></div>
+                            <div class="grid-square accent"></div>
+                        </div>
+                    </div>
+                    <div class="logo-text">
+                        <h1 class="brand-name">metronome</h1>
+                        <p class="brand-domain">.cloud</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="variant">
+                <h3 class="variant-title">Icon Only</h3>
+                <div class="icon-only">
+                    <div class="metronome-icon">
+                        <div class="icon-grid">
+                            <div class="grid-square"></div>
+                            <div class="grid-square accent"></div>
+                            <div class="grid-square"></div>
+                            <div class="grid-square"></div>
+                            <div class="grid-square accent"></div>
+                            <div class="grid-square empty"></div>
+                            <div class="grid-square"></div>
+                            <div class="grid-square"></div>
+                            <div class="grid-square accent"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="variant">
+                <h3 class="variant-title">Horizontal Layout</h3>
+                <div class="horizontal-logo">
+                    <div class="metronome-icon">
+                        <div class="icon-grid">
+                            <div class="grid-square"></div>
+                            <div class="grid-square accent"></div>
+                            <div class="grid-square"></div>
+                            <div class="grid-square"></div>
+                            <div class="grid-square accent"></div>
+                            <div class="grid-square empty"></div>
+                            <div class="grid-square"></div>
+                            <div class="grid-square"></div>
+                            <div class="grid-square accent"></div>
+                        </div>
+                    </div>
+                    <div class="logo-text">
+                        <h1 class="brand-name">metronome</h1>
+                        <p class="brand-domain">.cloud</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="color-info">
+            <h3>Brand Colors</h3>
+            <div class="color-swatches">
+                <div class="color-swatch">
+                    <div class="color-circle" style="background: #0a0a0a;"></div>
+                    <div class="color-label">Background</div>
+                    <div class="color-code">#0a0a0a</div>
+                </div>
+                <div class="color-swatch">
+                    <div class="color-circle" style="background: #ffffff;"></div>
+                    <div class="color-label">Primary</div>
+                    <div class="color-code">#ffffff</div>
+                </div>
+                <div class="color-swatch">
+                    <div class="color-circle" style="background: #ff6b35;"></div>
+                    <div class="color-label">Accent</div>
+                    <div class="color-code">#ff6b35</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
