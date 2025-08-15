@@ -115,41 +115,109 @@ body {
   }
 }
 
-.master-controls {
+/* Professional Transport Panel */
+.transport-panel {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-lg, 24px);
+  background: var(--bg-panel, #252525);
+  border: 2px solid var(--accent-border, #444444);
+  border-radius: var(--border-radius-large, 8px);
+  padding: var(--spacing-md, 16px);
+  box-shadow: var(--shadow-medium, 0 4px 8px rgba(0, 0, 0, 0.4));
+}
+
+/* Tempo Section */
+.tempo-section {
   display: flex;
   align-items: center;
   gap: var(--spacing-md, 16px);
+  padding: var(--spacing-sm, 8px);
+  background: var(--bg-secondary, #111111);
+  border-radius: var(--border-radius, 4px);
+  border: 1px solid var(--accent-border, #444444);
 }
 
-.tempo-controls {
+.tempo-knob-area {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--spacing-sm, 8px);
+}
+
+.tempo-controls-area {
   display: flex;
   flex-direction: column;
-  gap: 2px;
-}
-
-.tempo-controls button {
-  width: 30px;
-  height: 20px;
-  font-size: 12px;
-  padding: 0;
-}
-
-.transport-controls {
-  display: flex;
   gap: var(--spacing-sm, 8px);
+  align-items: center;
+}
+
+.tempo-display-container {
+  min-width: 80px;
+}
+
+.tempo-buttons {
+  display: flex;
+  gap: var(--spacing-xs, 4px);
+}
+
+.tempo-btn {
+  width: 35px;
+  height: 25px;
+  font-size: 14px;
+  font-weight: bold;
+  padding: 0;
+  border-radius: var(--border-radius, 4px);
+}
+
+/* Transport Section */
+.transport-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--spacing-sm, 8px);
+  padding: var(--spacing-sm, 8px);
+  background: var(--bg-secondary, #111111);
+  border-radius: var(--border-radius, 4px);
+  border: 1px solid var(--accent-border, #444444);
+}
+
+.main-controls {
+  display: flex;
+  justify-content: center;
 }
 
 .play-button {
-  width: 50px;
-  height: 50px;
+  width: 60px;
+  height: 60px;
   border-radius: 50%;
-  font-size: 18px;
+  font-size: 20px;
+  background: var(--accent-primary, #ff6b35);
+  border: 2px solid var(--accent-primary, #ff6b35);
+  color: var(--text-primary, #ffffff);
+  box-shadow: 0 0 15px rgba(255, 107, 53, 0.3);
+  transition: all var(--transition-medium, 0.2s);
 }
 
-.transport-controls button:not(.play-button) {
-  width: 60px;
-  height: 40px;
-  font-size: 12px;
+.play-button:hover {
+  background: var(--accent-secondary, #00ff88);
+  border-color: var(--accent-secondary, #00ff88);
+  box-shadow: 0 0 20px rgba(0, 255, 136, 0.4);
+  transform: scale(1.05);
+}
+
+.secondary-controls {
+  display: flex;
+  justify-content: center;
+}
+
+.tap-button {
+  width: 90px;
+  height: 30px;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  border-radius: var(--border-radius, 4px);
 }
 
 /* Polyrhythm Section */
@@ -190,23 +258,31 @@ body {
     gap: var(--spacing-md, 16px);
   }
   
-  .master-controls {
+  .transport-panel {
+    flex-direction: column;
+    gap: var(--spacing-md, 16px);
+  }
+  
+  .tempo-section {
     justify-content: center;
   }
   
-  .transport-controls {
-    justify-content: center;
-  }
-  
-  .transport-controls button:not(.play-button) {
-    width: 50px;
-    height: 35px;
-    font-size: 11px;
+  .transport-section {
+    flex-direction: row;
+    align-items: center;
+    gap: var(--spacing-md, 16px);
   }
   
   .play-button {
-    width: 60px;
-    height: 60px;
+    width: 50px;
+    height: 50px;
+    font-size: 18px;
+  }
+  
+  .tap-button {
+    width: 80px;
+    height: 35px;
+    font-size: 10px;
   }
 }
 
