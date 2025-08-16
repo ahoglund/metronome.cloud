@@ -135,6 +135,7 @@ class PolyrhythmicMetronome {
           </div>
         </div>
         <div class="track-controls">
+          <button class="track-mute" id="reference-mute">M</button>
           <div class="track-volume">
             <label>Vol</label>
             <input type="range" id="reference-volume" min="0" max="100" value="100">
@@ -152,6 +153,13 @@ class PolyrhythmicMetronome {
       const volume = parseInt(e.target.value);
       volumeValue.textContent = volume;
       this.referenceTrack.volume = volume;
+    });
+    
+    // Add mute control
+    const muteButton = container.querySelector('#reference-mute');
+    muteButton.addEventListener('click', () => {
+      this.referenceTrack.muted = !this.referenceTrack.muted;
+      muteButton.classList.toggle('active', this.referenceTrack.muted);
     });
     
     this.referenceTrack.volume = 100;
@@ -500,7 +508,9 @@ class PolyrhythmicMetronome {
       if (this.referenceTrack.nextBeatTime >= time) {
         if (!this.referenceTrack.muted) {
           console.log('Scheduling reference beat at', this.referenceTrack.nextBeatTime);
-          this.playSound(this.referenceTrack.nextBeatTime, this.sounds.reference, 1.0, (this.referenceTrack.volume / 100) * this.volume);
+          const isDownbeat = this.referenceTrack.currentBeat === 0;
+          const pitch = isDownbeat ? 1.2 : 1.0;
+          this.playSound(this.referenceTrack.nextBeatTime, this.sounds.reference, pitch, (this.referenceTrack.volume / 100) * this.volume);
         }
         this.updateReferenceDisplay();
       }
@@ -524,7 +534,9 @@ class PolyrhythmicMetronome {
           const soloedPolyrhythms = this.polyrhythms.filter(p => p.solo);
           if (soloedPolyrhythms.length === 0 || polyrhythm.solo) {
             console.log('Scheduling polyrhythm beat at', polyrhythm.nextBeatTime);
-            this.playSound(polyrhythm.nextBeatTime, this.sounds.polyrhythm, polyrhythm.pitch, (polyrhythm.volume / 100) * this.volume);
+            const isDownbeat = polyrhythm.currentBeat === 0;
+            const pitch = isDownbeat ? polyrhythm.pitch * 1.2 : polyrhythm.pitch;
+            this.playSound(polyrhythm.nextBeatTime, this.sounds.polyrhythm, pitch, (polyrhythm.volume / 100) * this.volume);
           }
           this.updatePolyrhythmDisplay(polyrhythm);
         }

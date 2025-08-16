@@ -378,6 +378,25 @@
   border-radius: 0 0 var(--border-radius, 4px) var(--border-radius, 4px);
 }
 
+@media (max-width: 768px) {
+  .track-body {
+    flex-direction: column;
+    align-items: stretch;
+    gap: var(--spacing-sm);
+  }
+  
+  .track-visualizer {
+    order: 3;
+    justify-content: center;
+  }
+  
+  .track-pattern, .track-volume {
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+  }
+}
+
 .track-pattern, .track-subdivision, .track-volume {
   display: flex;
   flex-direction: column;
@@ -423,15 +442,16 @@
 
 .beat-dots {
   display: flex;
-  gap: 2px;
+  gap: 4px;
   flex-wrap: wrap;
 }
 
 .beat-dot {
-  width: 8px;
-  height: 8px;
+  width: 16px;
+  height: 16px;
   background: var(--bg-tertiary);
   border: 1px solid var(--accent-border);
+  border-radius: 2px;
 }
 
 .beat-dot.downbeat {
