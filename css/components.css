@@ -327,6 +327,7 @@
 .track-controls {
   display: flex;
   gap: var(--spacing-xs);
+  align-items: center;
 }
 
 .track-controls button {
