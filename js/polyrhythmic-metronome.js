@@ -216,6 +216,7 @@ class PolyrhythmicMetronome {
         knobValue.textContent = `${this.tempo} BPM`;
         updateKnobRotation();
         this.updateTempoDisplay();
+        this.resyncAfterTempoChange();
       }
     });
     
@@ -266,6 +267,7 @@ class PolyrhythmicMetronome {
     this.tempo = Math.max(10, Math.min(400, this.tempo + delta));
     this.updateTempoDisplay();
     this.updateKnobRotation();
+    this.resyncAfterTempoChange();
   }
 
   updateKnobRotation() {
@@ -632,8 +634,36 @@ class PolyrhythmicMetronome {
       this.tempo = newTempo;
       this.updateTempoDisplay();
       this.updateKnobRotation();
+      this.resyncAfterTempoChange();
       console.log('Tap tempo calculated:', newTempo);
     }
+  }
+
+  resyncAfterTempoChange() {
+    if (!this.isPlaying) return;
+    
+    const currentTime = audioContext.currentTime;
+    const newBeatDuration = 60.0 / this.tempo;
+    
+    // Simple approach: schedule next beats for all tracks to happen very soon
+    // but maintain their current beat positions within their cycles
+    const syncTime = currentTime + 0.1; // 100ms from now
+    
+    // Resync reference track - keep current beat position, just adjust timing
+    this.referenceTrack.nextBeatTime = syncTime;
+    
+    // Update next cycle time 
+    const beatsUntilCycle = this.referenceTrack.beats - this.referenceTrack.currentBeat;
+    this.referenceTrack.nextCycleStartTime = syncTime + ((beatsUntilCycle - 1) * newBeatDuration);
+    
+    // Resync all polyrhythms - they'll sync to the next reference cycle
+    this.polyrhythms.forEach(polyrhythm => {
+      // Reset polyrhythms to start of their cycle and sync with next reference cycle
+      polyrhythm.currentBeat = 0;
+      polyrhythm.nextBeatTime = this.referenceTrack.nextCycleStartTime;
+    });
+    
+    console.log('Resynced all tracks after tempo change to', this.tempo, 'BPM');
   }
 }
 
