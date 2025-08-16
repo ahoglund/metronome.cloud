@@ -18,7 +18,8 @@ class PolyrhythmicMetronome {
       beats: 4,
       currentBeat: 0,
       nextBeatTime: 0,
-      nextCycleStartTime: 0
+      nextCycleStartTime: 0,
+      mutedBeats: new Array(4).fill(false)
     };
     
     // Polyrhythms array
@@ -128,10 +129,10 @@ class PolyrhythmicMetronome {
         </div>
         <div class="track-visualizer">
           <div class="beat-dots reference-dots">
-            <div class="beat-dot downbeat"></div>
-            <div class="beat-dot"></div>
-            <div class="beat-dot"></div>
-            <div class="beat-dot"></div>
+            <div class="beat-dot downbeat" data-beat="0"></div>
+            <div class="beat-dot" data-beat="1"></div>
+            <div class="beat-dot" data-beat="2"></div>
+            <div class="beat-dot" data-beat="3"></div>
           </div>
         </div>
         <div class="track-controls">
@@ -164,6 +165,14 @@ class PolyrhythmicMetronome {
     
     this.referenceTrack.volume = 100;
     this.referenceTrack.muted = false;
+    
+    // Add beat mute functionality
+    const beatDots = container.querySelectorAll('.beat-dot');
+    beatDots.forEach((dot, index) => {
+      dot.addEventListener('click', () => {
+        this.toggleReferenceBeatMute(index);
+      });
+    });
     
     console.log('Reference track created:', this.referenceTrack);
   }
@@ -360,7 +369,7 @@ class PolyrhythmicMetronome {
         <div class="track-visualizer">
           <div class="beat-dots polyrhythm-dots" data-poly="${polyrhythmId}">
             ${Array.from({length: beats}, (_, i) => 
-              `<div class="beat-dot ${i === 0 ? 'downbeat' : ''}"></div>`
+              `<div class="beat-dot ${i === 0 ? 'downbeat' : ''}" data-beat="${i}"></div>`
             ).join('')}
           </div>
         </div>
@@ -417,10 +426,20 @@ class PolyrhythmicMetronome {
       solo: false,
       currentBeat: currentBeat,
       nextBeatTime: nextBeatTime,
-      pitch: pitch
+      pitch: pitch,
+      mutedBeats: new Array(beats).fill(false)
     };
     
     this.polyrhythms.push(polyrhythm);
+    
+    // Add beat mute functionality to polyrhythm
+    const polyBeatDots = polyrhythmElement.querySelectorAll('.beat-dot');
+    polyBeatDots.forEach((dot, index) => {
+      dot.addEventListener('click', () => {
+        this.togglePolyrhythmBeatMute(polyrhythmId, index);
+      });
+    });
+    
     console.log(`Polyrhythm ${beats}:4 added. Total polyrhythms: ${this.polyrhythms.length}`);
   }
 
@@ -437,6 +456,14 @@ class PolyrhythmicMetronome {
     const polyrhythm = this.polyrhythms.find(p => p.id === polyrhythmId);
     if (polyrhythm) {
       polyrhythm.beats = beats;
+      
+      // Resize mutedBeats array to match new beat count
+      const oldMutedBeats = polyrhythm.mutedBeats || [];
+      polyrhythm.mutedBeats = new Array(beats).fill(false);
+      // Copy over existing mute states up to the minimum of old/new length
+      for (let i = 0; i < Math.min(oldMutedBeats.length, beats); i++) {
+        polyrhythm.mutedBeats[i] = oldMutedBeats[i];
+      }
       
       // If playing, reset to start at next reference cycle
       if (this.isPlaying) {
@@ -464,6 +491,13 @@ class PolyrhythmicMetronome {
     for (let i = 0; i < polyrhythm.beats; i++) {
       const dot = document.createElement('div');
       dot.className = i === 0 ? 'beat-dot downbeat' : 'beat-dot';
+      dot.setAttribute('data-beat', i);
+      dot.addEventListener('click', () => {
+        this.togglePolyrhythmBeatMute(polyrhythm.id, i);
+      });
+      if (polyrhythm.mutedBeats[i]) {
+        dot.classList.add('muted');
+      }
       visualizer.appendChild(dot);
     }
   }
@@ -506,7 +540,7 @@ class PolyrhythmicMetronome {
     // Schedule reference track beats at regular intervals
     while (this.referenceTrack.nextBeatTime < time + this.scheduleAheadTime) {
       if (this.referenceTrack.nextBeatTime >= time) {
-        if (!this.referenceTrack.muted) {
+        if (!this.referenceTrack.muted && !this.referenceTrack.mutedBeats[this.referenceTrack.currentBeat]) {
           console.log('Scheduling reference beat at', this.referenceTrack.nextBeatTime);
           const isDownbeat = this.referenceTrack.currentBeat === 0;
           const pitch = isDownbeat ? 1.2 : 1.0;
@@ -529,7 +563,7 @@ class PolyrhythmicMetronome {
       const polyrhythmBeatDuration = (beatDuration * this.referenceTrack.beats) / polyrhythm.beats;
       
       while (polyrhythm.nextBeatTime < time + this.scheduleAheadTime) {
-        if (polyrhythm.nextBeatTime >= time && !polyrhythm.muted) {
+        if (polyrhythm.nextBeatTime >= time && !polyrhythm.muted && !polyrhythm.mutedBeats[polyrhythm.currentBeat]) {
           // Check solo logic
           const soloedPolyrhythms = this.polyrhythms.filter(p => p.solo);
           if (soloedPolyrhythms.length === 0 || polyrhythm.solo) {
@@ -676,6 +710,33 @@ class PolyrhythmicMetronome {
     });
     
     console.log('Resynced all tracks after tempo change to', this.tempo, 'BPM');
+  }
+
+  toggleReferenceBeatMute(beatIndex) {
+    this.referenceTrack.mutedBeats[beatIndex] = !this.referenceTrack.mutedBeats[beatIndex];
+    
+    // Update visual indicator
+    const beatDot = document.querySelector(`.reference-dots .beat-dot[data-beat="${beatIndex}"]`);
+    if (beatDot) {
+      beatDot.classList.toggle('muted', this.referenceTrack.mutedBeats[beatIndex]);
+    }
+    
+    console.log(`Reference beat ${beatIndex} ${this.referenceTrack.mutedBeats[beatIndex] ? 'muted' : 'unmuted'}`);
+  }
+
+  togglePolyrhythmBeatMute(polyrhythmId, beatIndex) {
+    const polyrhythm = this.polyrhythms.find(p => p.id === polyrhythmId);
+    if (!polyrhythm) return;
+    
+    polyrhythm.mutedBeats[beatIndex] = !polyrhythm.mutedBeats[beatIndex];
+    
+    // Update visual indicator
+    const beatDot = polyrhythm.element.querySelector(`.beat-dot[data-beat="${beatIndex}"]`);
+    if (beatDot) {
+      beatDot.classList.toggle('muted', polyrhythm.mutedBeats[beatIndex]);
+    }
+    
+    console.log(`Polyrhythm ${polyrhythmId} beat ${beatIndex} ${polyrhythm.mutedBeats[beatIndex] ? 'muted' : 'unmuted'}`);
   }
 }
 

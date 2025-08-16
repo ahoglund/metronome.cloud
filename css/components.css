@@ -453,6 +453,24 @@
   background: var(--bg-tertiary);
   border: 1px solid var(--accent-border);
   border-radius: 2px;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.beat-dot:hover {
+  border-color: var(--accent-primary);
+}
+
+.beat-dot.muted {
+  background: #666666;
+  border-color: #666666;
+  opacity: 0.5;
+}
+
+.beat-dot.muted.active {
+  border-color: #666666;
+  background: #666666;
+  box-shadow: 0 0 4px #666666;
 }
 
 .beat-dot.downbeat {
@@ -524,10 +542,7 @@
   align-items: center;
   gap: var(--spacing-md);
   padding: var(--spacing-md);
-  background: var(--bg-secondary, #111111);
-  border-radius: var(--border-radius, 4px);
-  border: 1px solid var(--accent-border, #444444);
-  margin: var(--spacing-sm, 8px);
+  flex-shrink: 0;
 }
 
 .reference-track-display .track-info {
@@ -548,21 +563,27 @@
   font-family: 'Courier New', monospace;
 }
 
-.reference-dots .beat-dot {
+.reference-dots .beat-dot, .polyrhythm-dots .beat-dot {
   border: 2px solid var(--accent-primary);
 }
 
-.reference-dots .beat-dot.active {
+.reference-dots .beat-dot.active, .polyrhythm-dots .beat-dot.active {
   background: var(--accent-primary);
   box-shadow: 0 0 8px var(--accent-primary);
 }
 
-.reference-dots .beat-dot.downbeat {
+.reference-dots .beat-dot.muted.active, .polyrhythm-dots .beat-dot.muted.active {
+  background: #666666;
+  border-color: #666666;
+  box-shadow: 0 0 4px #666666;
+}
+
+.reference-dots .beat-dot.downbeat, .polyrhythm-dots .beat-dot.downbeat {
   background: var(--accent-primary);
   opacity: 0.7;
 }
 
-.reference-dots .beat-dot.downbeat.active {
+.reference-dots .beat-dot.downbeat.active, .polyrhythm-dots .beat-dot.downbeat.active {
   opacity: 1;
   box-shadow: 0 0 12px var(--accent-primary);
 }
