@@ -307,18 +307,21 @@
 
 /* Polyrhythm Track Component */
 .polyrhythm-track {
-  background: var(--bg-secondary);
-  border: 1px solid var(--accent-border);
+  background: var(--bg-secondary, #111111);
+  border: 1px solid var(--accent-border, #444444);
+  border-radius: var(--border-radius, 4px);
   margin-bottom: var(--spacing-sm);
+  box-shadow: var(--shadow-small, 0 2px 4px rgba(0, 0, 0, 0.3));
 }
 
 .track-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: var(--spacing-xs) var(--spacing-sm);
-  background: var(--bg-tertiary);
-  border-bottom: 1px solid var(--accent-border);
+  padding: var(--spacing-sm, 8px) var(--spacing-md, 16px);
+  background: var(--bg-tertiary, #222222);
+  border-radius: var(--border-radius, 4px) var(--border-radius, 4px) 0 0;
+  border-bottom: 1px solid var(--accent-border, #444444);
 }
 
 .track-controls {
@@ -327,21 +330,25 @@
 }
 
 .track-controls button {
-  width: 20px;
-  height: 20px;
+  width: 24px;
+  height: 24px;
   font-size: 10px;
   padding: 0;
   display: flex;
   align-items: center;
   justify-content: center;
+  border-radius: var(--border-radius, 4px);
+  transition: all var(--transition-fast, 0.1s);
 }
 
 .track-mute.active {
   background: var(--accent-active);
+  box-shadow: 0 0 6px var(--accent-active);
 }
 
 .track-solo.active {
   background: #ffaa00;
+  box-shadow: 0 0 6px #ffaa00;
 }
 
 .track-remove {
@@ -351,20 +358,24 @@
 
 .track-remove:hover {
   background: var(--accent-active);
+  box-shadow: 0 0 6px var(--accent-active);
 }
 
 .track-label {
-  font-size: 11px;
+  font-size: 12px;
   color: var(--text-secondary);
   text-transform: uppercase;
   letter-spacing: 0.5px;
+  font-weight: 600;
 }
 
 .track-body {
   display: flex;
   align-items: center;
   gap: var(--spacing-md);
-  padding: var(--spacing-sm);
+  padding: var(--spacing-md, 16px);
+  background: var(--bg-secondary, #111111);
+  border-radius: 0 0 var(--border-radius, 4px) var(--border-radius, 4px);
 }
 
 .track-pattern, .track-subdivision, .track-volume {
@@ -436,41 +447,46 @@
   box-shadow: 0 0 4px var(--accent-active);
 }
 
-/* Polyrhythm Controls */
-.polyrhythm-controls {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: var(--spacing-sm);
-  background: var(--bg-tertiary);
-  border-bottom: 1px solid var(--accent-border);
-}
-
+/* Add Track Button */
 .add-track-button {
-  background: var(--bg-secondary);
-  border: 1px solid var(--accent-border);
-  color: var(--text-primary);
-  padding: var(--spacing-xs) var(--spacing-sm);
+  background: var(--accent-primary, #ff6b35);
+  border: 2px solid var(--accent-primary, #ff6b35);
+  color: var(--text-primary, #ffffff);
+  padding: var(--spacing-sm, 8px) var(--spacing-md, 16px);
   font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  border-radius: var(--border-radius, 4px);
+  transition: all var(--transition-medium, 0.2s);
+  box-shadow: 0 0 10px rgba(255, 107, 53, 0.2);
 }
 
 .add-track-button:hover {
-  border-color: var(--text-primary);
+  background: var(--accent-secondary, #00ff88);
+  border-color: var(--accent-secondary, #00ff88);
+  box-shadow: 0 0 15px rgba(0, 255, 136, 0.3);
+  transform: translateY(-1px);
 }
 
 /* Reference Track Section */
 .reference-section {
-  background: var(--bg-secondary);
-  border-bottom: 1px solid var(--accent-border);
+  background: var(--bg-panel, #252525);
+  border: 2px solid var(--accent-border, #444444);
+  border-radius: var(--border-radius-large, 8px);
+  box-shadow: var(--shadow-medium, 0 4px 8px rgba(0, 0, 0, 0.4));
+  margin: var(--spacing-md, 16px);
 }
 
 .section-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: var(--spacing-sm);
-  background: var(--bg-tertiary);
-  border-bottom: 1px solid var(--accent-border);
+  padding: var(--spacing-md, 16px);
+  background: var(--bg-secondary, #111111);
+  border-radius: var(--border-radius, 4px);
+  border: 1px solid var(--accent-border, #444444);
+  margin: var(--spacing-sm, 8px);
 }
 
 .reference-info {
@@ -484,8 +500,10 @@
   align-items: center;
   gap: var(--spacing-md);
   padding: var(--spacing-md);
-  background: var(--bg-primary);
-  border-bottom: 2px solid var(--accent-primary);
+  background: var(--bg-secondary, #111111);
+  border-radius: var(--border-radius, 4px);
+  border: 1px solid var(--accent-border, #444444);
+  margin: var(--spacing-sm, 8px);
 }
 
 .reference-track-display .track-info {

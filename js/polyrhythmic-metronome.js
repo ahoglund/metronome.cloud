@@ -14,7 +14,6 @@ class PolyrhythmicMetronome {
     this.sounds = {};
     this.volume = 0.8;
     
-    // Reference track (always 4/4)
     this.referenceTrack = {
       beats: 4,
       currentBeat: 0,
@@ -124,7 +123,6 @@ class PolyrhythmicMetronome {
     container.innerHTML = `
       <div class="reference-track-display">
         <div class="track-info">
-          <div class="track-label">Reference: 4/4</div>
           <div class="track-tempo">${this.tempo} BPM</div>
         </div>
         <div class="track-visualizer">
@@ -333,6 +331,13 @@ class PolyrhythmicMetronome {
             <option value="7">7:4</option>
             <option value="8">8:4</option>
             <option value="9">9:4</option>
+            <option value="10">10:4</option>
+            <option value="11">11:4</option>
+            <option value="12">12:4</option>
+            <option value="13">13:4</option>
+            <option value="14">14:4</option>
+            <option value="15">15:4</option>
+            <option value="16">16:4</option>
           </select>
         </div>
         <div class="track-volume">
