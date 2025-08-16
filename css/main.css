@@ -119,38 +119,18 @@ body {
 .transport-panel {
   display: flex;
   align-items: center;
-  gap: var(--spacing-md);
-  padding: var(--spacing-md);
+  justify-content: space-evenly;
+  width: calc(100% - 16px);
+  gap: 8px;
+  padding: 8px;
   background: var(--bg-secondary, #111111);
   border-radius: var(--border-radius, 4px);
   border: 1px solid var(--accent-border, #444444);
   margin: var(--spacing-sm, 8px);
+  box-sizing: border-box;
+  overflow: hidden;
 }
 
-/* Tempo Section */
-.tempo-section {
-  display: flex;
-  align-items: center;
-  gap: var(--spacing-md, 16px);
-  padding: var(--spacing-sm, 8px);
-  background: var(--bg-secondary, #111111);
-  border-radius: var(--border-radius, 4px);
-  border: 1px solid var(--accent-border, #444444);
-}
-
-.tempo-knob-area {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: var(--spacing-sm, 8px);
-}
-
-.tempo-controls-area {
-  display: flex;
-  flex-direction: column;
-  gap: var(--spacing-sm, 8px);
-  align-items: center;
-}
 
 .tempo-display-container {
   min-width: 80px;
@@ -158,45 +138,32 @@ body {
 
 .tempo-buttons {
   display: flex;
+  flex-direction: column;
   gap: var(--spacing-xs, 4px);
 }
 
 .tempo-btn {
-  width: 35px;
-  height: 25px;
-  font-size: 14px;
+  width: 28px;
+  height: 20px;
+  font-size: 12px;
   font-weight: bold;
   padding: 0;
   border-radius: var(--border-radius, 4px);
+  flex-shrink: 0;
 }
 
-/* Transport Section */
-.transport-section {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: var(--spacing-sm, 8px);
-  padding: var(--spacing-sm, 8px);
-  background: var(--bg-secondary, #111111);
-  border-radius: var(--border-radius, 4px);
-  border: 1px solid var(--accent-border, #444444);
-}
-
-.main-controls {
-  display: flex;
-  justify-content: center;
-}
 
 .play-button {
-  width: 60px;
-  height: 60px;
+  width: 44px;
+  height: 44px;
   border-radius: 50%;
-  font-size: 20px;
+  font-size: 16px;
   background: var(--accent-primary, #ff6b35);
   border: 2px solid var(--accent-primary, #ff6b35);
   color: var(--text-primary, #ffffff);
   box-shadow: 0 0 15px rgba(255, 107, 53, 0.3);
   transition: all var(--transition-medium, 0.2s);
+  flex-shrink: 0;
 }
 
 .play-button:hover {
@@ -206,18 +173,22 @@ body {
   transform: scale(1.05);
 }
 
-.secondary-controls {
-  display: flex;
-  justify-content: center;
-}
 
 .tap-button {
-  width: 90px;
-  height: 30px;
-  font-size: 11px;
+  background: var(--accent-primary, #ff6b35);
+  border: 2px solid var(--accent-primary, #ff6b35);
+  color: var(--text-primary, #ffffff);
+  padding: 4px 6px;
+  font-size: 9px;
   font-weight: 600;
-  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  letter-spacing: 0.2px;
   border-radius: var(--border-radius, 4px);
+  transition: all var(--transition-medium, 0.2s);
+  box-shadow: 0 0 10px rgba(255, 107, 53, 0.2);
+  white-space: nowrap;
+  height: 28px;
+  flex-shrink: 0;
 }
 
 /* Polyrhythm Section */
@@ -230,16 +201,6 @@ body {
   margin: var(--spacing-md, 16px);
 }
 
-.polyrhythm-controls {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: var(--spacing-md, 16px);
-  background: var(--bg-secondary, #111111);
-  border-radius: var(--border-radius, 4px);
-  border: 1px solid var(--accent-border, #444444);
-  margin: var(--spacing-sm, 8px);
-}
 
 .section-title {
   font-size: 14px;
@@ -275,16 +236,6 @@ body {
   
   .transport-panel {
     flex-direction: column;
-    gap: var(--spacing-md, 16px);
-  }
-  
-  .tempo-section {
-    justify-content: center;
-  }
-  
-  .transport-section {
-    flex-direction: row;
-    align-items: center;
     gap: var(--spacing-md, 16px);
   }
   

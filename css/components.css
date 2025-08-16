@@ -452,14 +452,17 @@
   background: var(--accent-primary, #ff6b35);
   border: 2px solid var(--accent-primary, #ff6b35);
   color: var(--text-primary, #ffffff);
-  padding: var(--spacing-sm, 8px) var(--spacing-md, 16px);
-  font-size: 12px;
+  padding: 4px 6px;
+  font-size: 9px;
   font-weight: 600;
   text-transform: uppercase;
-  letter-spacing: 0.5px;
+  letter-spacing: 0.2px;
   border-radius: var(--border-radius, 4px);
   transition: all var(--transition-medium, 0.2s);
   box-shadow: 0 0 10px rgba(255, 107, 53, 0.2);
+  white-space: nowrap;
+  height: 28px;
+  flex-shrink: 0;
 }
 
 .add-track-button:hover {

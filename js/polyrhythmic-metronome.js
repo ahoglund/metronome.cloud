@@ -17,7 +17,8 @@ class PolyrhythmicMetronome {
     this.referenceTrack = {
       beats: 4,
       currentBeat: 0,
-      nextBeatTime: 0
+      nextBeatTime: 0,
+      nextCycleStartTime: 0
     };
     
     // Polyrhythms array
@@ -25,8 +26,8 @@ class PolyrhythmicMetronome {
     this.nextPolyrhythmId = 1;
     this.masterTick = 0;
     
-    // Available pitches for polyrhythms
-    this.pitches = [1.0, 1.2, 0.8, 1.5, 0.67, 1.33, 0.75, 1.25];
+    // Available pitches for polyrhythms (excluding 1.0 which is used by reference track)
+    this.pitches = [1.2, 0.8, 1.5, 0.67, 1.33, 0.75, 1.25, 1.1];
     
     // Tap tempo
     this.tapTempoBuffer = [];
@@ -243,6 +244,7 @@ class PolyrhythmicMetronome {
       this.masterTick = 0;
       this.referenceTrack.currentBeat = 0;
       this.referenceTrack.nextBeatTime = this.nextTickTime;
+      this.referenceTrack.nextCycleStartTime = this.nextTickTime;
       
       // Reset all polyrhythm positions
       this.polyrhythms.forEach(poly => {
@@ -388,25 +390,11 @@ class PolyrhythmicMetronome {
     let currentBeat = 0;
     
     if (this.isPlaying) {
-      // If playing, sync to the reference track's current cycle
-      const beatDuration = 60.0 / this.tempo;
-      const polyrhythmBeatDuration = (beatDuration * this.referenceTrack.beats) / beats;
+      // Always start polyrhythms at the beginning of the next reference cycle
+      nextBeatTime = this.referenceTrack.nextCycleStartTime;
+      currentBeat = 0;
       
-      // Calculate how far we are into the current reference cycle (0.0 to 1.0)
-      const cycleDuration = beatDuration * this.referenceTrack.beats;
-      const timeInCurrentCycle = (this.referenceTrack.currentBeat * beatDuration) + 
-                                 (this.referenceTrack.nextBeatTime - audioContext.currentTime - beatDuration);
-      const cycleProgress = Math.max(0, timeInCurrentCycle / cycleDuration);
-      
-      // Calculate where the polyrhythm should be at this point in the cycle
-      const polyrhythmProgress = cycleProgress * beats;
-      currentBeat = Math.floor(polyrhythmProgress) % beats;
-      
-      // Calculate when the next polyrhythm beat should occur
-      const beatsUntilNext = (Math.ceil(polyrhythmProgress) - polyrhythmProgress);
-      nextBeatTime = audioContext.currentTime + (beatsUntilNext * polyrhythmBeatDuration);
-      
-      console.log(`Syncing polyrhythm: cycle progress ${cycleProgress.toFixed(3)}, starting at beat ${currentBeat}, next beat at ${nextBeatTime.toFixed(3)}`);
+      console.log(`Syncing polyrhythm to next cycle start at ${nextBeatTime.toFixed(3)}`);
     }
 
     // Store polyrhythm data
@@ -439,6 +427,13 @@ class PolyrhythmicMetronome {
     const polyrhythm = this.polyrhythms.find(p => p.id === polyrhythmId);
     if (polyrhythm) {
       polyrhythm.beats = beats;
+      
+      // If playing, reset to start at next reference cycle
+      if (this.isPlaying) {
+        polyrhythm.currentBeat = 0;
+        polyrhythm.nextBeatTime = this.referenceTrack.nextCycleStartTime;
+        console.log(`Resetting polyrhythm ${polyrhythmId} to sync with next cycle at ${polyrhythm.nextBeatTime.toFixed(3)}`);
+      }
       
       // Update label
       const label = polyrhythm.element.querySelector('.track-label');
@@ -510,6 +505,11 @@ class PolyrhythmicMetronome {
       
       this.referenceTrack.currentBeat = (this.referenceTrack.currentBeat + 1) % this.referenceTrack.beats;
       this.referenceTrack.nextBeatTime += beatDuration;
+      
+      // Update next cycle start time when we complete a cycle
+      if (this.referenceTrack.currentBeat === 0) {
+        this.referenceTrack.nextCycleStartTime = this.referenceTrack.nextBeatTime;
+      }
     }
     
     // Schedule polyrhythm beats
