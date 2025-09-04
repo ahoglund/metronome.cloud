@@ -99,6 +99,43 @@ body {
   letter-spacing: 0.5px;
 }
 
+/* Header Links */
+.header-links {
+  display: flex;
+  gap: 16px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.header-link {
+  color: #cccccc;
+  text-decoration: none;
+  font-size: 14px;
+  font-weight: 500;
+  padding: 6px 12px;
+  border-radius: 4px;
+  transition: all 0.2s ease;
+  border: 1px solid transparent;
+  background: transparent;
+}
+
+.header-link:link, .header-link:visited {
+  color: #cccccc;
+  background: transparent;
+}
+
+.header-link:hover {
+  color: #ffffff;
+  background: rgba(255, 107, 53, 0.1);
+  border-color: rgba(255, 107, 53, 0.3);
+  transform: translateY(-1px);
+}
+
+.header-link.tip-link:hover {
+  background: rgba(0, 255, 136, 0.1);
+  border-color: rgba(0, 255, 136, 0.3);
+}
+
 /* Logo hover animation */
 .logo-header:hover .grid-square.accent {
   animation: pulse 1s ease-in-out infinite;
