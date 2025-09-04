@@ -6,6 +6,7 @@
     <title>metronome.cloud - Polyrhythmic Metronome</title>
     <link rel="stylesheet" href="css/components.css">
     <link rel="stylesheet" href="css/main.css">
+    <script async src="https://js.stripe.com/v3/buy-button.js"></script>
     <script type="module" src="js/polyrhythmic-metronome.js"></script>
   </head>
   <body>
@@ -30,6 +31,19 @@
           <div class="logo-text">
             <h1 class="brand-name">cloud metronome</h1>
           </div>
+        </div>
+        
+        <div class="header-links">
+          <a href="https://github.com/ahoglund/metronome.cloud/issues" target="_blank" class="header-link">
+            Report Bug / Request Feature
+          </a>
+         <stripe-buy-button
+            buy-button-id="buy_btn_1S3dknKyNCgUX0zguG2ik3H7"
+            publishable-key="pk_live_51IvCOSKyNCgUX0zgfoyrRapP6iNZ7FxpbaCHF5v3lL2XcFGIN0SJeQ1slG4SnLi6Ws8bk0SdFQs4lvTsEzNarcOg00uxTK7G27"
+            class="stripe-buy-button"
+          >
+          </stripe-buy-button>
+
         </div>
         
       </header>
