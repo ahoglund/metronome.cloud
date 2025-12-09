@@ -10,6 +10,10 @@ body {
   color: var(--text-primary, #ffffff);
   min-height: 100vh;
   overflow-x: hidden;
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  user-select: none;
+  touch-action: manipulation;
 }
 
 /* Simplified Layout */
@@ -281,57 +285,82 @@ body {
     align-items: stretch;
     gap: var(--spacing-md, 16px);
   }
-  
+
   .main-controls-panel {
     flex-direction: column;
     gap: var(--spacing-sm);
   }
-  
+
   .transport-panel {
     display: grid;
     grid-template-columns: 1fr auto 1fr;
     grid-template-rows: auto auto;
-    gap: var(--spacing-sm);
+    gap: var(--spacing-md);
     align-items: center;
     justify-items: center;
-    padding: var(--spacing-sm);
+    padding: var(--spacing-md);
   }
-  
+
   .transport-panel #tempo-knob {
     grid-column: 1;
     grid-row: 1;
+    touch-action: none;
+    -webkit-tap-highlight-color: transparent;
   }
-  
+
   .transport-panel .tempo-buttons {
     grid-column: 2;
     grid-row: 1;
   }
-  
+
   .transport-panel #toggle-button {
     grid-column: 3;
     grid-row: 1;
   }
-  
+
   .transport-panel #tap-tempo-button {
     grid-column: 1;
     grid-row: 2;
   }
-  
+
   .transport-panel #add-polyrhythm-button {
     grid-column: 2 / 4;
     grid-row: 2;
   }
-  
+
+  /* Ensure proper touch target sizes (44x44px minimum for iOS) */
   .play-button {
-    width: 50px;
-    height: 50px;
-    font-size: 18px;
+    width: 60px;
+    height: 60px;
+    font-size: 20px;
+    -webkit-tap-highlight-color: transparent;
   }
-  
+
   .tap-button {
-    width: 80px;
-    height: 35px;
-    font-size: 10px;
+    min-width: 100px;
+    height: 44px;
+    font-size: 11px;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  .tempo-btn {
+    min-width: 36px;
+    min-height: 28px;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  .add-track-button {
+    min-height: 44px;
+    width: 100%;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  /* Knob touch improvements */
+  .knob-handle {
+    width: 60px !important;
+    height: 60px !important;
+    touch-action: none;
+    -webkit-tap-highlight-color: transparent;
   }
 }
 
@@ -433,6 +462,8 @@ button {
   box-shadow: var(--shadow-small, 0 2px 4px rgba(0, 0, 0, 0.3));
   position: relative;
   overflow: hidden;
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
 }
 
 button:hover {

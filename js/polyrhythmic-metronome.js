@@ -34,7 +34,15 @@ class PolyrhythmicMetronome {
     this.tapTempoBuffer = [];
     this.tapTimer = undefined;
     this.tapTimerTimeout = 2000;
-    
+
+    // Practice mode
+    this.practiceMode = {
+      bpmIncrease: 0,
+      barsPerIncrease: 8,
+      currentBar: 0,
+      startingTempo: 120
+    };
+
     this.init();
   }
 
@@ -115,6 +123,39 @@ class PolyrhythmicMetronome {
         e.preventDefault();
         this.handleTapTempo();
       }
+    });
+
+    // Practice mode controls - preset buttons
+    document.querySelectorAll('.practice-preset-btn').forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        const value = parseInt(e.target.getAttribute('data-value'));
+        const controlGroup = e.target.closest('.practice-control-group');
+        const label = controlGroup.querySelector('label').textContent;
+
+        if (label.includes('BPM')) {
+          this.setPracticeBpmIncrease(value);
+        } else if (label.includes('Bars')) {
+          this.setPracticeBarsPerIncrease(value);
+        }
+      });
+    });
+
+    // BPM Increase adjust buttons
+    document.getElementById('bpm-increase-down').addEventListener('click', () => {
+      this.setPracticeBpmIncrease(Math.max(0, this.practiceMode.bpmIncrease - 1));
+    });
+
+    document.getElementById('bpm-increase-up').addEventListener('click', () => {
+      this.setPracticeBpmIncrease(Math.min(50, this.practiceMode.bpmIncrease + 1));
+    });
+
+    // Bars per Increase adjust buttons
+    document.getElementById('bars-per-increase-down').addEventListener('click', () => {
+      this.setPracticeBarsPerIncrease(Math.max(1, this.practiceMode.barsPerIncrease - 1));
+    });
+
+    document.getElementById('bars-per-increase-up').addEventListener('click', () => {
+      this.setPracticeBarsPerIncrease(Math.min(100, this.practiceMode.barsPerIncrease + 1));
     });
   }
 
@@ -207,27 +248,28 @@ class PolyrhythmicMetronome {
     };
     
     updateKnobRotation();
-    
-    knobHandle.addEventListener('mousedown', (e) => {
+
+    // Helper function to handle drag start
+    const handleDragStart = (clientY) => {
       isDragging = true;
-      startY = e.clientY;
+      startY = clientY;
       startValue = this.tempo;
       knobContainer.classList.add('dragging');
       document.body.style.cursor = 'ns-resize';
-      e.preventDefault();
-    });
-    
-    document.addEventListener('mousemove', (e) => {
+    };
+
+    // Helper function to handle drag move
+    const handleDragMove = (clientY) => {
       if (!isDragging) return;
-      
-      const deltaY = startY - e.clientY;
+
+      const deltaY = startY - clientY;
       const sensitivity = 0.5;
       const range = 400 - 10;
       const delta = (deltaY * sensitivity * range) / 100;
-      
+
       let newTempo = startValue + delta;
       newTempo = Math.max(10, Math.min(400, Math.round(newTempo)));
-      
+
       if (newTempo !== this.tempo) {
         this.tempo = newTempo;
         knobValue.textContent = `${this.tempo} BPM`;
@@ -235,14 +277,46 @@ class PolyrhythmicMetronome {
         this.updateTempoDisplay();
         this.resyncAfterTempoChange();
       }
-    });
-    
-    document.addEventListener('mouseup', () => {
+    };
+
+    // Helper function to handle drag end
+    const handleDragEnd = () => {
       if (isDragging) {
         isDragging = false;
         knobContainer.classList.remove('dragging');
         document.body.style.cursor = '';
       }
+    };
+
+    // Mouse events
+    knobHandle.addEventListener('mousedown', (e) => {
+      handleDragStart(e.clientY);
+      e.preventDefault();
+    });
+
+    document.addEventListener('mousemove', (e) => {
+      handleDragMove(e.clientY);
+    });
+
+    document.addEventListener('mouseup', () => {
+      handleDragEnd();
+    });
+
+    // Touch events for mobile
+    knobHandle.addEventListener('touchstart', (e) => {
+      handleDragStart(e.touches[0].clientY);
+      e.preventDefault();
+    }, { passive: false });
+
+    document.addEventListener('touchmove', (e) => {
+      if (isDragging) {
+        handleDragMove(e.touches[0].clientY);
+        e.preventDefault();
+      }
+    }, { passive: false });
+
+    document.addEventListener('touchend', () => {
+      handleDragEnd();
     });
   }
 
@@ -263,13 +337,18 @@ class PolyrhythmicMetronome {
       this.referenceTrack.currentBeat = 0;
       this.referenceTrack.nextBeatTime = this.nextTickTime;
       this.referenceTrack.nextCycleStartTime = this.nextTickTime;
-      
+
       // Reset all polyrhythm positions
       this.polyrhythms.forEach(poly => {
         poly.currentBeat = 0;
         poly.nextBeatTime = this.nextTickTime;
       });
-      
+
+      // Reset practice mode
+      this.practiceMode.currentBar = 0;
+      this.practiceMode.startingTempo = this.tempo;
+      this.updatePracticeModeDisplay();
+
       this.worker.postMessage("start");
       icon.textContent = "⏸";
     } else {
@@ -549,12 +628,20 @@ class PolyrhythmicMetronome {
         this.updateReferenceDisplay();
       }
       
+      // Check if we're about to complete a bar (before incrementing)
+      const isAboutToCompleteBar = this.referenceTrack.currentBeat === this.referenceTrack.beats - 1;
+
       this.referenceTrack.currentBeat = (this.referenceTrack.currentBeat + 1) % this.referenceTrack.beats;
       this.referenceTrack.nextBeatTime += beatDuration;
-      
+
       // Update next cycle start time when we complete a cycle
       if (this.referenceTrack.currentBeat === 0) {
         this.referenceTrack.nextCycleStartTime = this.referenceTrack.nextBeatTime;
+
+        // Check practice mode bar completion (after all beats in bar are scheduled)
+        if (isAboutToCompleteBar) {
+          this.checkPracticeModeBarComplete();
+        }
       }
     }
     
@@ -727,16 +814,105 @@ class PolyrhythmicMetronome {
   togglePolyrhythmBeatMute(polyrhythmId, beatIndex) {
     const polyrhythm = this.polyrhythms.find(p => p.id === polyrhythmId);
     if (!polyrhythm) return;
-    
+
     polyrhythm.mutedBeats[beatIndex] = !polyrhythm.mutedBeats[beatIndex];
-    
+
     // Update visual indicator
     const beatDot = polyrhythm.element.querySelector(`.beat-dot[data-beat="${beatIndex}"]`);
     if (beatDot) {
       beatDot.classList.toggle('muted', polyrhythm.mutedBeats[beatIndex]);
     }
-    
+
     console.log(`Polyrhythm ${polyrhythmId} beat ${beatIndex} ${polyrhythm.mutedBeats[beatIndex] ? 'muted' : 'unmuted'}`);
+  }
+
+  setPracticeBpmIncrease(value) {
+    this.practiceMode.bpmIncrease = value;
+
+    // Update value display
+    const valueDisplay = document.getElementById('bpm-increase-value');
+    if (valueDisplay) {
+      valueDisplay.textContent = value;
+    }
+
+    // Update active button state
+    const controlGroup = valueDisplay.closest('.practice-control-group');
+    controlGroup.querySelectorAll('.practice-preset-btn').forEach(btn => {
+      if (parseInt(btn.getAttribute('data-value')) === value) {
+        btn.classList.add('active');
+      } else {
+        btn.classList.remove('active');
+      }
+    });
+  }
+
+  setPracticeBarsPerIncrease(value) {
+    this.practiceMode.barsPerIncrease = value;
+
+    // Update value display
+    const valueDisplay = document.getElementById('bars-per-increase-value');
+    if (valueDisplay) {
+      valueDisplay.textContent = value;
+    }
+
+    // Update active button state
+    const controlGroup = valueDisplay.closest('.practice-control-group');
+    controlGroup.querySelectorAll('.practice-preset-btn').forEach(btn => {
+      if (parseInt(btn.getAttribute('data-value')) === value) {
+        btn.classList.add('active');
+      } else {
+        btn.classList.remove('active');
+      }
+    });
+
+    // Update bar counter display
+    this.updatePracticeModeDisplay();
+  }
+
+  updatePracticeModeDisplay() {
+    const barCountEl = document.getElementById('bar-count');
+    const barTotalEl = document.getElementById('bar-total');
+
+    if (barCountEl) {
+      barCountEl.textContent = this.practiceMode.currentBar;
+    }
+    if (barTotalEl) {
+      barTotalEl.textContent = this.practiceMode.barsPerIncrease;
+    }
+  }
+
+  checkPracticeModeBarComplete() {
+    if (!this.isPlaying) return;
+
+    // A bar has just completed
+    this.practiceMode.currentBar++;
+    this.updatePracticeModeDisplay();
+
+    console.log(`Practice mode: Bar ${this.practiceMode.currentBar}/${this.practiceMode.barsPerIncrease}`);
+
+    // Check if we need to increase tempo (only if bpmIncrease > 0)
+    if (this.practiceMode.bpmIncrease > 0 && this.practiceMode.currentBar >= this.practiceMode.barsPerIncrease) {
+      this.increasePracticeModeTempo();
+      this.practiceMode.currentBar = 0;
+      this.updatePracticeModeDisplay();
+    }
+  }
+
+  increasePracticeModeTempo() {
+    const newTempo = Math.min(400, this.tempo + this.practiceMode.bpmIncrease);
+
+    if (newTempo !== this.tempo) {
+      console.log(`Practice mode: Increasing tempo from ${this.tempo} to ${newTempo} BPM`);
+      this.tempo = newTempo;
+      this.updateTempoDisplay();
+      this.updateKnobRotation();
+
+      // Don't resync - just let the new tempo naturally take effect on the next beat
+      // The beatDuration is recalculated on each scheduleTick() call
+      // This ensures a smooth transition at the bar boundary
+    } else {
+      console.log('Practice mode: Maximum tempo reached (400 BPM)');
+    }
   }
 }
 

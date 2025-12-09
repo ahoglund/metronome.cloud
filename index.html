@@ -67,10 +67,52 @@
             <button class="add-track-button" id="add-polyrhythm-button">Add Polyrhythm</button>
           </div>
         </div>
+
+        <!-- Practice Mode Panel -->
+        <div class="practice-mode-panel">
+          <div class="practice-mode-header">
+            <span class="practice-mode-label">Practice Mode</span>
+            <div id="practice-mode-bar-counter" class="bar-counter">
+              Bar <span id="bar-count">0</span>/<span id="bar-total">8</span>
+            </div>
+          </div>
+          <div class="practice-mode-controls">
+            <div class="practice-control-group">
+              <label>BPM Increase</label>
+              <div class="practice-button-group">
+                <button class="practice-preset-btn active" data-value="0">0</button>
+                <button class="practice-preset-btn" data-value="2">2</button>
+                <button class="practice-preset-btn" data-value="5">5</button>
+                <button class="practice-preset-btn" data-value="10">10</button>
+                <div class="practice-adjust-buttons">
+                  <button class="practice-adjust-btn" id="bpm-increase-down">-</button>
+                  <span class="practice-value" id="bpm-increase-value">0</span>
+                  <button class="practice-adjust-btn" id="bpm-increase-up">+</button>
+                </div>
+              </div>
+            </div>
+            <div class="practice-control-group">
+              <label>Bars per Increase</label>
+              <div class="practice-button-group">
+                <button class="practice-preset-btn" data-value="2">2</button>
+                <button class="practice-preset-btn" data-value="4">4</button>
+                <button class="practice-preset-btn active" data-value="8">8</button>
+                <button class="practice-preset-btn" data-value="16">16</button>
+                <button class="practice-preset-btn" data-value="32">32</button>
+                <div class="practice-adjust-buttons">
+                  <button class="practice-adjust-btn" id="bars-per-increase-down">-</button>
+                  <span class="practice-value" id="bars-per-increase-value">8</span>
+                  <button class="practice-adjust-btn" id="bars-per-increase-up">+</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
         <div class="tracks-container" id="polyrhythms-container">
           <!-- Polyrhythm tracks will be added here dynamically -->
         </div>
-        
+
       </section>
     </div>
   </body>
