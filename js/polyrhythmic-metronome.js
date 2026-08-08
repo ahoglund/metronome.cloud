@@ -87,12 +87,6 @@ class PolyrhythmicMetronome {
     // Setup tempo knob
     this.setupTempoKnob();
     
-    // Tempo display
-    const tempoDisplay = document.getElementById('tempo-display');
-    if (tempoDisplay) {
-      tempoDisplay.innerHTML = `<div class="led-screen"><span class="led-text">${this.tempo}</span></div><div class="led-label">BPM</div>`;
-    }
-
     // Transport buttons
     document.getElementById('toggle-button').addEventListener('click', () => {
       this.toggle();
@@ -124,6 +118,15 @@ class PolyrhythmicMetronome {
         this.handleTapTempo();
       }
     });
+
+    // Practice mode toggle
+    const practiceToggle = document.getElementById('practice-mode-toggle');
+    if (practiceToggle) {
+      practiceToggle.addEventListener('click', () => {
+        const panel = document.getElementById('practice-mode-panel');
+        panel.classList.toggle('expanded');
+      });
+    }
 
     // Practice mode controls - preset buttons
     document.querySelectorAll('.practice-preset-btn').forEach(btn => {
@@ -162,11 +165,12 @@ class PolyrhythmicMetronome {
   createReferenceTrack() {
     const container = document.getElementById('reference-track');
     if (!container) return;
-    
+
     container.innerHTML = `
       <div class="reference-track-display">
-        <div class="track-info">
-          <div class="track-tempo">${this.tempo} BPM</div>
+        <span class="reference-label">4/4</span>
+        <div class="track-controls">
+          <button class="track-mute" id="reference-mute">M</button>
         </div>
         <div class="track-visualizer">
           <div class="beat-dots reference-dots">
@@ -176,13 +180,9 @@ class PolyrhythmicMetronome {
             <div class="beat-dot" data-beat="3"></div>
           </div>
         </div>
-        <div class="track-controls">
-          <button class="track-mute" id="reference-mute">M</button>
-          <div class="track-volume">
-            <label>Vol</label>
-            <input type="range" id="reference-volume" min="0" max="100" value="100">
-            <span class="volume-value">100</span>
-          </div>
+        <div class="track-volume">
+          <input type="range" class="volume-slider" id="reference-volume" min="0" max="100" value="100">
+          <span class="volume-value">100</span>
         </div>
       </div>
     `;
@@ -228,14 +228,11 @@ class PolyrhythmicMetronome {
           <div class="knob-handle" style="width: 50px; height: 50px;">
             <div class="knob-indicator"></div>
           </div>
-          <div class="knob-value">${this.tempo} BPM</div>
         </div>
-        <label class="knob-label">Tempo</label>
       </div>
     `;
     
     const knobHandle = knobContainer.querySelector('.knob-handle');
-    const knobValue = knobContainer.querySelector('.knob-value');
     let isDragging = false;
     let startY = 0;
     let startValue = this.tempo;
@@ -272,7 +269,6 @@ class PolyrhythmicMetronome {
 
       if (newTempo !== this.tempo) {
         this.tempo = newTempo;
-        knobValue.textContent = `${this.tempo} BPM`;
         updateKnobRotation();
         this.updateTempoDisplay();
         this.resyncAfterTempoChange();
@@ -377,20 +373,10 @@ class PolyrhythmicMetronome {
   }
 
   updateTempoDisplay() {
-    const tempoText = document.querySelector('#tempo-display .led-text');
-    if (tempoText) {
-      tempoText.textContent = this.tempo;
-    }
-    
-    const knobValue = document.querySelector('#tempo-knob .knob-value');
-    if (knobValue) {
-      knobValue.textContent = `${this.tempo} BPM`;
-    }
-    
-    // Update reference track tempo display
-    const referenceTempo = document.querySelector('.reference-track-display .track-tempo');
-    if (referenceTempo) {
-      referenceTempo.textContent = `${this.tempo} BPM`;
+    // Update large BPM display
+    const tempoDisplay = document.getElementById('tempo-display');
+    if (tempoDisplay) {
+      tempoDisplay.textContent = this.tempo;
     }
   }
 
@@ -412,45 +398,40 @@ class PolyrhythmicMetronome {
     const polyrhythmElement = document.createElement('div');
     polyrhythmElement.className = 'polyrhythm-track';
     polyrhythmElement.innerHTML = `
-      <div class="track-header">
+      <div class="track-row">
+        <select class="beats-select" data-poly="${polyrhythmId}">
+          <option value="2">2:4</option>
+          <option value="3" selected>3:4</option>
+          <option value="5">5:4</option>
+          <option value="6">6:4</option>
+          <option value="7">7:4</option>
+          <option value="8">8:4</option>
+          <option value="9">9:4</option>
+          <option value="10">10:4</option>
+          <option value="11">11:4</option>
+          <option value="12">12:4</option>
+          <option value="13">13:4</option>
+          <option value="14">14:4</option>
+          <option value="15">15:4</option>
+          <option value="16">16:4</option>
+        </select>
         <div class="track-controls">
           <button class="track-mute" data-poly="${polyrhythmId}">M</button>
           <button class="track-solo" data-poly="${polyrhythmId}">S</button>
-          <button class="track-remove" data-poly="${polyrhythmId}">×</button>
-        </div>
-        <div class="track-label">Polyrhythm ${beats}:4</div>
-      </div>
-      <div class="track-body">
-        <div class="track-pattern">
-          <label>Ratio</label>
-          <select class="beats-select" data-poly="${polyrhythmId}">
-            <option value="2">2:4</option>
-            <option value="3" selected>3:4</option>
-            <option value="5">5:4</option>
-            <option value="6">6:4</option>
-            <option value="7">7:4</option>
-            <option value="8">8:4</option>
-            <option value="9">9:4</option>
-            <option value="10">10:4</option>
-            <option value="11">11:4</option>
-            <option value="12">12:4</option>
-            <option value="13">13:4</option>
-            <option value="14">14:4</option>
-            <option value="15">15:4</option>
-            <option value="16">16:4</option>
-          </select>
-        </div>
-        <div class="track-volume">
-          <label>Vol</label>
-          <input type="range" class="volume-slider" data-poly="${polyrhythmId}" min="0" max="100" value="80">
-          <span class="volume-value">80</span>
         </div>
         <div class="track-visualizer">
           <div class="beat-dots polyrhythm-dots" data-poly="${polyrhythmId}">
-            ${Array.from({length: beats}, (_, i) => 
+            ${Array.from({length: beats}, (_, i) =>
               `<div class="beat-dot ${i === 0 ? 'downbeat' : ''}" data-beat="${i}"></div>`
             ).join('')}
           </div>
+        </div>
+        <div class="track-volume">
+          <input type="range" class="volume-slider" data-poly="${polyrhythmId}" min="0" max="100" value="80">
+          <span class="volume-value">80</span>
+        </div>
+        <div class="track-controls">
+          <button class="track-remove" data-poly="${polyrhythmId}">&times;</button>
         </div>
       </div>
     `;
@@ -551,10 +532,6 @@ class PolyrhythmicMetronome {
         console.log(`Resetting polyrhythm ${polyrhythmId} to sync with next cycle at ${polyrhythm.nextBeatTime.toFixed(3)}`);
       }
       
-      // Update label
-      const label = polyrhythm.element.querySelector('.track-label');
-      label.textContent = `Polyrhythm ${beats}:4`;
-      
       // Update visualizer
       this.updatePolyrhythmVisualizer(polyrhythmId);
     }
@@ -620,12 +597,13 @@ class PolyrhythmicMetronome {
     while (this.referenceTrack.nextBeatTime < time + this.scheduleAheadTime) {
       if (this.referenceTrack.nextBeatTime >= time) {
         if (!this.referenceTrack.muted && !this.referenceTrack.mutedBeats[this.referenceTrack.currentBeat]) {
-          console.log('Scheduling reference beat at', this.referenceTrack.nextBeatTime);
           const isDownbeat = this.referenceTrack.currentBeat === 0;
           const pitch = isDownbeat ? 1.2 : 1.0;
           this.playSound(this.referenceTrack.nextBeatTime, this.sounds.reference, pitch, (this.referenceTrack.volume / 100) * this.volume);
         }
-        this.updateReferenceDisplay();
+        const refBeatToDisplay = this.referenceTrack.currentBeat;
+        const refDelay = Math.max(0, (this.referenceTrack.nextBeatTime - audioContext.currentTime) * 1000);
+        setTimeout(() => this.updateReferenceDisplay(refBeatToDisplay), refDelay);
       }
       
       // Check if we're about to complete a bar (before incrementing)
@@ -654,12 +632,14 @@ class PolyrhythmicMetronome {
           // Check solo logic
           const soloedPolyrhythms = this.polyrhythms.filter(p => p.solo);
           if (soloedPolyrhythms.length === 0 || polyrhythm.solo) {
-            console.log('Scheduling polyrhythm beat at', polyrhythm.nextBeatTime);
             const isDownbeat = polyrhythm.currentBeat === 0;
             const pitch = isDownbeat ? polyrhythm.pitch * 1.2 : polyrhythm.pitch;
             this.playSound(polyrhythm.nextBeatTime, this.sounds.polyrhythm, pitch, (polyrhythm.volume / 100) * this.volume);
           }
-          this.updatePolyrhythmDisplay(polyrhythm);
+          const polyBeatToDisplay = polyrhythm.currentBeat;
+          const polyRef = polyrhythm;
+          const polyDelay = Math.max(0, (polyrhythm.nextBeatTime - audioContext.currentTime) * 1000);
+          setTimeout(() => this.updatePolyrhythmDisplay(polyRef, polyBeatToDisplay), polyDelay);
         }
         
         polyrhythm.currentBeat = (polyrhythm.currentBeat + 1) % polyrhythm.beats;
@@ -679,7 +659,7 @@ class PolyrhythmicMetronome {
       source.buffer = buffer;
       
       const gainNode = audioContext.createGain();
-      gainNode.gain.setValueAtTime(volume * this.volume, time);
+      gainNode.gain.setValueAtTime(volume, time);
       
       source.playbackRate.value = pitch;
       
@@ -691,21 +671,21 @@ class PolyrhythmicMetronome {
     }
   }
 
-  updateReferenceDisplay() {
+  updateReferenceDisplay(beat) {
     const dots = document.querySelectorAll('.reference-dots .beat-dot');
     dots.forEach((dot, index) => {
       dot.classList.remove('active');
-      if (index === this.referenceTrack.currentBeat) {
+      if (index === beat) {
         dot.classList.add('active');
       }
     });
   }
 
-  updatePolyrhythmDisplay(polyrhythm) {
+  updatePolyrhythmDisplay(polyrhythm, beat) {
     const dots = polyrhythm.element.querySelectorAll('.beat-dot');
     dots.forEach((dot, index) => {
       dot.classList.remove('active');
-      if (index === polyrhythm.currentBeat) {
+      if (index === beat) {
         dot.classList.add('active');
       }
     });
@@ -787,7 +767,7 @@ class PolyrhythmicMetronome {
     
     // Update next cycle time 
     const beatsUntilCycle = this.referenceTrack.beats - this.referenceTrack.currentBeat;
-    this.referenceTrack.nextCycleStartTime = syncTime + ((beatsUntilCycle - 1) * newBeatDuration);
+    this.referenceTrack.nextCycleStartTime = syncTime + (beatsUntilCycle * newBeatDuration);
     
     // Resync all polyrhythms - they'll sync to the next reference cycle
     this.polyrhythms.forEach(polyrhythm => {
@@ -907,9 +887,11 @@ class PolyrhythmicMetronome {
       this.updateTempoDisplay();
       this.updateKnobRotation();
 
-      // Don't resync - just let the new tempo naturally take effect on the next beat
-      // The beatDuration is recalculated on each scheduleTick() call
-      // This ensures a smooth transition at the bar boundary
+      // Resync polyrhythms to the next reference cycle so they don't drift
+      this.polyrhythms.forEach(polyrhythm => {
+        polyrhythm.currentBeat = 0;
+        polyrhythm.nextBeatTime = this.referenceTrack.nextCycleStartTime;
+      });
     } else {
       console.log('Practice mode: Maximum tempo reached (400 BPM)');
     }

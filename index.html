@@ -11,8 +11,7 @@
   </head>
   <body>
     <div class="app-container">
-      
-      <!-- Global Controls -->
+
       <header class="global-controls">
         <div class="logo-header">
           <div class="metronome-icon">
@@ -28,52 +27,39 @@
               <div class="grid-square accent"></div>
             </div>
           </div>
-          <div class="logo-text">
-            <h1 class="brand-name">cloud metronome</h1>
-          </div>
+          <h1 class="brand-name">cloud metronome</h1>
         </div>
-        
-        <div class="header-links">
-          <a href="https://github.com/ahoglund/metronome.cloud/issues" target="_blank" class="header-link">
-            Report Bug / Request Feature
-          </a>
-         <stripe-buy-button
-            buy-button-id="buy_btn_1S3dknKyNCgUX0zguG2ik3H7"
-            publishable-key="pk_live_51IvCOSKyNCgUX0zgfoyrRapP6iNZ7FxpbaCHF5v3lL2XcFGIN0SJeQ1slG4SnLi6Ws8bk0SdFQs4lvTsEzNarcOg00uxTK7G27"
-            class="stripe-buy-button"
-          >
-          </stripe-buy-button>
-
-        </div>
-        
       </header>
 
-      <!-- Reference Track Section -->
       <section class="reference-section">
-        <div class="main-controls-panel">
-          <div class="reference-track" id="reference-track">
-            <!-- Reference track will be created here -->
+
+        <div class="transport-panel">
+          <div id="tempo-knob"></div>
+          <div id="tempo-display" class="bpm-display">120</div>
+          <div class="tempo-buttons">
+            <button id="tempo-up-button" class="tempo-btn">+</button>
+            <button id="tempo-down-button" class="tempo-btn">-</button>
           </div>
-          <div class="transport-panel">
-            <div id="tempo-knob"></div>
-            <div class="tempo-buttons">
-              <button id="tempo-up-button" class="tempo-btn">+</button>
-              <button id="tempo-down-button" class="tempo-btn">-</button>
-            </div>
-            <button id="toggle-button" class="play-button">
-              <span id="play-icon">▶</span>
-            </button>
-            <button class="tap-button" id="tap-tempo-button">TAP TEMPO</button>
-            <button class="add-track-button" id="add-polyrhythm-button">Add Polyrhythm</button>
-          </div>
+          <button id="toggle-button" class="play-button">
+            <span id="play-icon">&#9654;</span>
+          </button>
+          <button class="tap-button" id="tap-tempo-button">Tap</button>
         </div>
 
-        <!-- Practice Mode Panel -->
-        <div class="practice-mode-panel">
-          <div class="practice-mode-header">
+        <div class="reference-track" id="reference-track"></div>
+
+        <div class="tracks-container" id="polyrhythms-container"></div>
+
+        <button class="add-track-button" id="add-polyrhythm-button">+ Add Track</button>
+
+        <div class="practice-mode-panel" id="practice-mode-panel">
+          <div class="practice-mode-header" id="practice-mode-toggle">
             <span class="practice-mode-label">Practice Mode</span>
-            <div id="practice-mode-bar-counter" class="bar-counter">
-              Bar <span id="bar-count">0</span>/<span id="bar-total">8</span>
+            <div class="practice-header-right">
+              <div class="bar-counter">
+                Bar <span id="bar-count">0</span>/<span id="bar-total">8</span>
+              </div>
+              <span class="practice-chevron">&#9656;</span>
             </div>
           </div>
           <div class="practice-mode-controls">
@@ -109,11 +95,17 @@
           </div>
         </div>
 
-        <div class="tracks-container" id="polyrhythms-container">
-          <!-- Polyrhythm tracks will be added here dynamically -->
-        </div>
-
       </section>
+
+      <footer class="app-footer">
+        <a href="https://github.com/ahoglund/metronome.cloud/issues" target="_blank">Report Bug / Request Feature</a>
+        <stripe-buy-button
+          buy-button-id="buy_btn_1S3dknKyNCgUX0zguG2ik3H7"
+          publishable-key="pk_live_51IvCOSKyNCgUX0zgfoyrRapP6iNZ7FxpbaCHF5v3lL2XcFGIN0SJeQ1slG4SnLi6Ws8bk0SdFQs4lvTsEzNarcOg00uxTK7G27"
+        >
+        </stripe-buy-button>
+      </footer>
+
     </div>
   </body>
 </html>
