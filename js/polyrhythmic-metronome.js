@@ -2,10 +2,12 @@ var AudioContext = window.AudioContext || window.webkitAudioContext;
 var audioContext = new AudioContext();
 
 import { BufferLoader } from './buffer-loader.js';
+import { track } from './analytics.js';
 
 class PolyrhythmicMetronome {
   constructor() {
     this.isPlaying = false;
+    this.sessionStartTime = null;
     this.lookahead = 25.0;
     this.scheduleAheadTime = 0.1;
     this.nextTickTime = 0.0;
@@ -281,6 +283,10 @@ class PolyrhythmicMetronome {
         isDragging = false;
         knobContainer.classList.remove('dragging');
         document.body.style.cursor = '';
+        // Once per drag, not per pixel of movement.
+        if (this.tempo !== startValue) {
+          track('tempo_change', { source: 'knob', tempo: this.tempo });
+        }
       }
     };
 
@@ -328,6 +334,8 @@ class PolyrhythmicMetronome {
     
     if (this.isPlaying) {
       console.log('Starting polyrhythmic metronome');
+      this.sessionStartTime = Date.now();
+      track('start', { tempo: this.tempo, tracks: this.polyrhythms.length });
       this.nextTickTime = audioContext.currentTime;
       this.masterTick = 0;
       this.referenceTrack.currentBeat = 0;
@@ -349,6 +357,12 @@ class PolyrhythmicMetronome {
       icon.textContent = "⏸";
     } else {
       console.log('Stopping metronome');
+      track('stop', {
+        tempo: this.tempo,
+        duration_sec: this.sessionStartTime
+          ? Math.round((Date.now() - this.sessionStartTime) / 1000)
+          : 0
+      });
       this.worker.postMessage("stop");
       icon.textContent = "▶";
       this.resetVisualizers();
@@ -360,6 +374,7 @@ class PolyrhythmicMetronome {
     this.updateTempoDisplay();
     this.updateKnobRotation();
     this.resyncAfterTempoChange();
+    track('tempo_change', { source: 'buttons', tempo: this.tempo });
   }
 
   updateKnobRotation() {
@@ -501,6 +516,7 @@ class PolyrhythmicMetronome {
     });
     
     console.log(`Polyrhythm ${beats}:4 added. Total polyrhythms: ${this.polyrhythms.length}`);
+    track('track_add', { beats: beats, count: this.polyrhythms.length });
   }
 
   removePolyrhythm(polyrhythmId) {
@@ -509,6 +525,7 @@ class PolyrhythmicMetronome {
       this.polyrhythms[index].element.remove();
       this.polyrhythms.splice(index, 1);
       console.log(`Polyrhythm ${polyrhythmId} removed`);
+      track('track_remove', { count: this.polyrhythms.length });
     }
   }
 
@@ -516,6 +533,7 @@ class PolyrhythmicMetronome {
     const polyrhythm = this.polyrhythms.find(p => p.id === polyrhythmId);
     if (polyrhythm) {
       polyrhythm.beats = beats;
+      track('ratio_change', { beats: beats });
       
       // Resize mutedBeats array to match new beat count
       const oldMutedBeats = polyrhythm.mutedBeats || [];
@@ -749,6 +767,7 @@ class PolyrhythmicMetronome {
       this.updateKnobRotation();
       this.resyncAfterTempoChange();
       console.log('Tap tempo calculated:', newTempo);
+      track('tap_tempo', { tempo: newTempo });
     }
   }
 
@@ -789,6 +808,10 @@ class PolyrhythmicMetronome {
     }
     
     console.log(`Reference beat ${beatIndex} ${this.referenceTrack.mutedBeats[beatIndex] ? 'muted' : 'unmuted'}`);
+    track('beat_mute', {
+      layer: 'reference',
+      muted: this.referenceTrack.mutedBeats[beatIndex]
+    });
   }
 
   togglePolyrhythmBeatMute(polyrhythmId, beatIndex) {
@@ -804,10 +827,24 @@ class PolyrhythmicMetronome {
     }
 
     console.log(`Polyrhythm ${polyrhythmId} beat ${beatIndex} ${polyrhythm.mutedBeats[beatIndex] ? 'muted' : 'unmuted'}`);
+    track('beat_mute', {
+      layer: 'polyrhythm',
+      beats: polyrhythm.beats,
+      muted: polyrhythm.mutedBeats[beatIndex]
+    });
   }
 
   setPracticeBpmIncrease(value) {
+    const wasEnabled = this.practiceMode.bpmIncrease > 0;
     this.practiceMode.bpmIncrease = value;
+
+    // Practice mode has no on/off switch; it is "on" once bpmIncrease > 0.
+    if (!wasEnabled && value > 0) {
+      track('practice_enable', {
+        bpm_increase: value,
+        bars: this.practiceMode.barsPerIncrease
+      });
+    }
 
     // Update value display
     const valueDisplay = document.getElementById('bpm-increase-value');
@@ -884,6 +921,8 @@ class PolyrhythmicMetronome {
     if (newTempo !== this.tempo) {
       console.log(`Practice mode: Increasing tempo from ${this.tempo} to ${newTempo} BPM`);
       this.tempo = newTempo;
+      // Runs from the audio scheduler - track() must never throw or block.
+      track('practice_step', { tempo: newTempo });
       this.updateTempoDisplay();
       this.updateKnobRotation();
 

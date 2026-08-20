@@ -1,13 +1,124 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
   <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>metronome.cloud - Polyrhythmic Metronome</title>
+
+    <title>Free Online Polyrhythm Metronome | metronome.cloud</title>
+    <meta name="description" content="Free online polyrhythm metronome. Layer 3:4, 5:4 or any ratio over a 4/4 pulse, mute individual beats, and speed up automatically with practice mode.">
+    <link rel="canonical" href="https://metronome.cloud/">
+    <meta name="theme-color" content="#0d0d0d">
+
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+    <link rel="icon" href="/favicon-32.png" sizes="32x32" type="image/png">
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="metronome.cloud">
+    <meta property="og:url" content="https://metronome.cloud/">
+    <meta property="og:title" content="Free Online Polyrhythm Metronome">
+    <meta property="og:description" content="Layer 3:4, 5:4 or any ratio over a 4/4 pulse, mute individual beats, and speed up automatically with practice mode. Free, no signup.">
+    <meta property="og:image" content="https://metronome.cloud/og-image.png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:image:alt" content="metronome.cloud - a polyrhythm metronome showing a 3 against 4 pattern">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Free Online Polyrhythm Metronome">
+    <meta name="twitter:description" content="Layer 3:4, 5:4 or any ratio over a 4/4 pulse, mute individual beats, and speed up automatically with practice mode. Free, no signup.">
+    <meta name="twitter:image" content="https://metronome.cloud/og-image.png">
+
     <link rel="stylesheet" href="css/components.css">
     <link rel="stylesheet" href="css/main.css">
     <script async src="https://js.stripe.com/v3/buy-button.js"></script>
+    <script defer src="https://cloud.umami.is/script.js" data-website-id="12b84d18-db94-4d80-85aa-4b4ceb91b2b5"></script>
     <script type="module" src="js/polyrhythmic-metronome.js"></script>
+
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebApplication",
+      "name": "metronome.cloud",
+      "alternateName": "Cloud Metronome",
+      "url": "https://metronome.cloud/",
+      "description": "A free online polyrhythm metronome. Layer any ratio from 2:4 to 16:4 over a 4/4 reference track, mute individual beats, and increase the tempo automatically with practice mode.",
+      "applicationCategory": "MultimediaApplication",
+      "applicationSubCategory": "Metronome",
+      "operatingSystem": "Any",
+      "browserRequirements": "Requires a browser with Web Audio API support",
+      "isAccessibleForFree": true,
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "USD"
+      },
+      "featureList": [
+        "Polyrhythm ratios from 2:4 to 16:4 against a 4/4 reference track",
+        "Multiple simultaneous polyrhythm layers",
+        "Individual beat muting on every track",
+        "Practice mode with automatic tempo increase",
+        "Tap tempo",
+        "Tempo range of 10 to 400 BPM",
+        "Works on desktop and mobile with no installation"
+      ]
+    }
+    </script>
+
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "Is this metronome free?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes. Every feature is free, there is no account to create and nothing to install. It runs entirely in your browser."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What is a polyrhythm?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "A polyrhythm is two rhythms with different beat counts played across the same span of time. In a 3 against 4 polyrhythm, one voice divides the bar into 3 even beats while another divides it into 4. Both lines start together on the downbeat and drift apart until they line up again at the top of the next bar."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Which polyrhythm ratios can I play?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Any ratio from 2:4 up to 16:4 against the 4/4 reference track, including 3:4, 5:4 and 7:4. You can stack several layers at once to build compound patterns."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Can the metronome speed up automatically?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes. Practice mode raises the tempo by a set number of BPM every few bars, so you can start a passage slow and work it up to speed without touching the controls."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Does it work on iPhone and Android?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes. The layout adapts to small screens and works in any modern mobile browser. Tap the play button once to let the browser start audio."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What is the difference between a polyrhythm and a polymeter?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "A polyrhythm fits different beat counts into the same bar length, so the cycles realign every bar. A polymeter keeps the beat length the same but gives each part a different bar length, so the parts take much longer to line up again."
+          }
+        }
+      ]
+    }
+    </script>
   </head>
   <body>
     <div class="app-container">
@@ -27,7 +138,7 @@
               <div class="grid-square accent"></div>
             </div>
           </div>
-          <h1 class="brand-name">cloud metronome</h1>
+          <div class="brand-name">cloud metronome</div>
         </div>
       </header>
 
@@ -95,6 +206,86 @@
           </div>
         </div>
 
+      </section>
+
+
+      <section class="seo-content">
+        <h1>Free Online Polyrhythm Metronome</h1>
+        <p class="lead">
+          A polyrhythmic metronome that runs in your browser. Keep a steady 4/4 pulse
+          going and layer any ratio on top of it &mdash; 3:4, 5:4, 7:4, anything up to
+          16:4 &mdash; then mute the beats you want to feel instead of hear. No account,
+          no install, no cost.
+        </p>
+
+        <h2>What is a polyrhythm?</h2>
+        <p>
+          A polyrhythm is two rhythms with different beat counts played across the same
+          span of time. In a <strong>3 against 4</strong> polyrhythm, one voice divides
+          the bar into three even beats while another divides it into four. Both start
+          together on the downbeat, pull against each other in the middle, and land
+          together again at the top of the next bar. Hearing that pull clearly is the
+          hard part, and it is exactly what this metronome is built for: each layer gets
+          its own pitch so you can pick the lines apart while they overlap.
+        </p>
+
+        <h2>How to use it</h2>
+        <ol>
+          <li>Set your tempo with the knob, the <strong>+</strong> and <strong>&minus;</strong>
+              buttons, or the <strong>Tap</strong> button. Press <kbd>T</kbd> to tap from
+              the keyboard.</li>
+          <li>Press play, or hit the <kbd>space</kbd> bar. The top row is your 4/4
+              reference pulse.</li>
+          <li>Press <strong>+ Add Track</strong> and choose a ratio from the dropdown to
+              lay a polyrhythm over that pulse. Add as many layers as you want.</li>
+          <li>Click any beat dot to mute that single beat. Silencing the downbeat of a
+              layer is a good way to force yourself to internalise where it falls.</li>
+          <li>Use the mute, solo and volume controls on each track to isolate one line
+              while you learn it.</li>
+        </ol>
+
+        <h2>Practice mode: a metronome that speeds up</h2>
+        <p>
+          Working a passage up to tempo is the whole job, so the metronome will do it for
+          you. Open <strong>Practice Mode</strong>, choose how many BPM to add and how
+          many bars to wait between increases, and the tempo climbs on its own while you
+          play. Start a lick at 60 BPM, set it to add 5 BPM every 8 bars, and let it walk
+          you up to speed without ever reaching for the controls.
+        </p>
+
+        <h2>Frequently asked questions</h2>
+
+        <h3>Is this metronome free?</h3>
+        <p>
+          Yes. Every feature is free, there is no account to create and nothing to
+          install. It runs entirely in your browser.
+        </p>
+
+        <h3>Which polyrhythm ratios can I play?</h3>
+        <p>
+          Any ratio from 2:4 up to 16:4 against the 4/4 reference track, including 3:4,
+          5:4 and 7:4. You can stack several layers at once to build compound patterns.
+        </p>
+
+        <h3>Can the metronome speed up automatically?</h3>
+        <p>
+          Yes. Practice mode raises the tempo by a set number of BPM every few bars, so
+          you can start a passage slow and work it up to speed without touching the
+          controls.
+        </p>
+
+        <h3>Does it work on iPhone and Android?</h3>
+        <p>
+          Yes. The layout adapts to small screens and works in any modern mobile browser.
+          Tap the play button once to let the browser start audio.
+        </p>
+
+        <h3>What is the difference between a polyrhythm and a polymeter?</h3>
+        <p>
+          A polyrhythm fits different beat counts into the same bar length, so the cycles
+          realign every bar. A polymeter keeps the beat length the same but gives each
+          part a different bar length, so the parts take much longer to line up again.
+        </p>
       </section>
 
       <footer class="app-footer">
