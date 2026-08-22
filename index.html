@@ -62,63 +62,6 @@
       ]
     }
     </script>
-
-    <script type="application/ld+json">
-    {
-      "@context": "https://schema.org",
-      "@type": "FAQPage",
-      "mainEntity": [
-        {
-          "@type": "Question",
-          "name": "Is this metronome free?",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "Yes. Every feature is free, there is no account to create and nothing to install. It runs entirely in your browser."
-          }
-        },
-        {
-          "@type": "Question",
-          "name": "What is a polyrhythm?",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "A polyrhythm is two rhythms with different beat counts played across the same span of time. In a 3 against 4 polyrhythm, one voice divides the bar into 3 even beats while another divides it into 4. Both lines start together on the downbeat and drift apart until they line up again at the top of the next bar."
-          }
-        },
-        {
-          "@type": "Question",
-          "name": "Which polyrhythm ratios can I play?",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "Any ratio from 2:4 up to 16:4 against the 4/4 reference track, including 3:4, 5:4 and 7:4. You can stack several layers at once to build compound patterns."
-          }
-        },
-        {
-          "@type": "Question",
-          "name": "Can the metronome speed up automatically?",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "Yes. Practice mode raises the tempo by a set number of BPM every few bars, so you can start a passage slow and work it up to speed without touching the controls."
-          }
-        },
-        {
-          "@type": "Question",
-          "name": "Does it work on iPhone and Android?",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "Yes. The layout adapts to small screens and works in any modern mobile browser. Tap the play button once to let the browser start audio."
-          }
-        },
-        {
-          "@type": "Question",
-          "name": "What is the difference between a polyrhythm and a polymeter?",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "A polyrhythm fits different beat counts into the same bar length, so the cycles realign every bar. A polymeter keeps the beat length the same but gives each part a different bar length, so the parts take much longer to line up again."
-          }
-        }
-      ]
-    }
-    </script>
   </head>
   <body>
     <div class="app-container">
@@ -224,71 +167,35 @@
           span of time. In a <strong>3 against 4</strong> polyrhythm, one voice divides
           the bar into three even beats while another divides it into four. Both start
           together on the downbeat, pull against each other in the middle, and land
-          together again at the top of the next bar. Hearing that pull clearly is the
-          hard part, and it is exactly what this metronome is built for: each layer gets
-          its own pitch so you can pick the lines apart while they overlap.
+          together again at the top of the next bar. Each layer here gets its own pitch,
+          so you can pick the lines apart while they overlap.
         </p>
 
         <h2>How to use it</h2>
-        <ol>
-          <li>Set your tempo with the knob, the <strong>+</strong> and <strong>&minus;</strong>
-              buttons, or the <strong>Tap</strong> button. Press <kbd>T</kbd> to tap from
-              the keyboard.</li>
-          <li>Press play, or hit the <kbd>space</kbd> bar. The top row is your 4/4
-              reference pulse.</li>
-          <li>Press <strong>+ Add Track</strong> and choose a ratio from the dropdown to
-              lay a polyrhythm over that pulse. Add as many layers as you want.</li>
-          <li>Click any beat dot to mute that single beat. Silencing the downbeat of a
-              layer is a good way to force yourself to internalise where it falls.</li>
-          <li>Use the mute, solo and volume controls on each track to isolate one line
-              while you learn it.</li>
-        </ol>
+        <p>
+          Set the tempo with the knob or the <strong>Tap</strong> button, press
+          <kbd>space</kbd> to start, then hit <strong>+ Add Track</strong> and choose a
+          ratio to lay a polyrhythm over the 4/4 reference pulse. Click any beat dot to
+          mute that single beat &mdash; silencing a layer's downbeat is a good way to
+          force yourself to internalise where it falls.
+        </p>
 
         <h2>Practice mode: a metronome that speeds up</h2>
         <p>
           Working a passage up to tempo is the whole job, so the metronome will do it for
           you. Open <strong>Practice Mode</strong>, choose how many BPM to add and how
           many bars to wait between increases, and the tempo climbs on its own while you
-          play. Start a lick at 60 BPM, set it to add 5 BPM every 8 bars, and let it walk
-          you up to speed without ever reaching for the controls.
+          play. Start a lick at 60 BPM, add 5 BPM every 8 bars, and let it walk you up to
+          speed without ever reaching for the controls.
         </p>
 
-        <h2>Frequently asked questions</h2>
-
-        <h3>Is this metronome free?</h3>
-        <p>
-          Yes. Every feature is free, there is no account to create and nothing to
-          install. It runs entirely in your browser.
-        </p>
-
-        <h3>Which polyrhythm ratios can I play?</h3>
-        <p>
-          Any ratio from 2:4 up to 16:4 against the 4/4 reference track, including 3:4,
-          5:4 and 7:4. You can stack several layers at once to build compound patterns.
-        </p>
-
-        <h3>Can the metronome speed up automatically?</h3>
-        <p>
-          Yes. Practice mode raises the tempo by a set number of BPM every few bars, so
-          you can start a passage slow and work it up to speed without touching the
-          controls.
-        </p>
-
-        <h3>Does it work on iPhone and Android?</h3>
-        <p>
-          Yes. The layout adapts to small screens and works in any modern mobile browser.
-          Tap the play button once to let the browser start audio.
-        </p>
-
-        <h3>What is the difference between a polyrhythm and a polymeter?</h3>
-        <p>
-          A polyrhythm fits different beat counts into the same bar length, so the cycles
-          realign every bar. A polymeter keeps the beat length the same but gives each
-          part a different bar length, so the parts take much longer to line up again.
+        <p class="seo-more">
+          More questions? Read the <a href="/faq/">polyrhythm metronome FAQ</a>.
         </p>
       </section>
 
       <footer class="app-footer">
+        <a href="/faq/">FAQ</a>
         <a href="https://github.com/ahoglund/metronome.cloud/issues" target="_blank">Report Bug / Request Feature</a>
         <stripe-buy-button
           buy-button-id="buy_btn_1S3dknKyNCgUX0zguG2ik3H7"

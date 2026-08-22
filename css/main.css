@@ -397,3 +397,26 @@ input, select {
     font-size: 19px;
   }
 }
+
+/* ── Content pages ── */
+.seo-content a {
+  color: var(--accent-primary);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.seo-content a:hover {
+  color: var(--text-primary);
+}
+
+.seo-more {
+  margin-top: var(--spacing-xl);
+  padding-top: var(--spacing-md);
+  border-top: 1px solid var(--accent-border);
+}
+
+/* Standalone pages have no app panel above them to divide from */
+.seo-page {
+  margin-top: 0;
+  border-top: none;
+}
