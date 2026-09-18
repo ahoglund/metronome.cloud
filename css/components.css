@@ -1,17 +1,38 @@
 /* Theme Variables */
 :root {
-  --bg-primary: #0d0d0d;
-  --bg-secondary: #141414;
-  --bg-tertiary: #1e1e1e;
-  --bg-panel: #0a0a0a;
+  /* ── Palette ── */
+  --black:   #0B0C10;
+  --scarlet: #F5122F;
+  --ember:   #E95F18;
+  --amber:   #E49500;
+  --yellow:  #EECC00;
+  --cobalt:  #1C6FD0;
+
+  /* Surfaces: the old neutral ladder, carrying Black's slight blue cast */
+  --bg-primary: #0B0C10;
+  --bg-secondary: #121419;
+  --bg-tertiary: #1B1E25;
+  --bg-panel: #08090C;
+  --bg-hover: #2E323C;
+  --bg-sunken: #16181D;
+  --bg-raised: #3D424E;
 
   --text-primary: #ffffff;
   --text-secondary: #cccccc;
-  --text-muted: #777777;
+  /* #777 read at 4.34:1 and failed AA; this clears it and looks the same */
+  --text-muted: #7C7C7C;
 
-  --accent-primary: #ff6b35;
-  --accent-active: #ff6b35;
-  --accent-border: #2a2a2a;
+  --accent-primary: var(--ember);
+  --accent-active: var(--ember);
+  --accent-border: #262A33;
+  /* Ember as channels, for glows that need an alpha */
+  --accent-rgb: 233, 95, 24;
+
+  --color-solo: var(--amber);
+  --color-danger: var(--scarlet);
+  --color-focus: var(--cobalt);
+  /* Cobalt lightened 10% toward white so link text clears AA on --black */
+  --color-link: #337DD5;
 
   --spacing-xs: 4px;
   --spacing-sm: 8px;
@@ -87,31 +108,31 @@
 }
 
 .beat-dot:hover {
-  background: #333;
+  background: var(--bg-hover);
 }
 
 .beat-dot.downbeat {
-  background: rgba(255, 107, 53, 0.35);
+  background: rgba(var(--accent-rgb), 0.35);
 }
 
 .beat-dot.active {
   background: var(--accent-primary);
-  box-shadow: 0 0 8px rgba(255, 107, 53, 0.5);
+  box-shadow: 0 0 8px rgba(var(--accent-rgb), 0.5);
 }
 
 .beat-dot.muted {
-  background: #1a1a1a;
+  background: var(--bg-sunken);
   opacity: 0.4;
 }
 
 .beat-dot.muted.active {
-  background: #444;
+  background: var(--bg-raised);
   box-shadow: 0 0 4px rgba(100, 100, 100, 0.3);
   opacity: 0.5;
 }
 
 .beat-dot.downbeat.active {
-  box-shadow: 0 0 12px rgba(255, 107, 53, 0.6);
+  box-shadow: 0 0 12px rgba(var(--accent-rgb), 0.6);
 }
 
 /* ── Polyrhythm Track ── */
@@ -150,6 +171,12 @@
   border-color: var(--accent-primary);
 }
 
+/* Out-specifies the :focus rule above, which would otherwise suppress the ring. */
+.track-row select:focus-visible {
+  outline: 2px solid var(--color-focus);
+  outline-offset: 2px;
+}
+
 .track-controls {
   display: flex;
   gap: 3px;
@@ -175,7 +202,7 @@
 }
 
 .track-controls button:hover {
-  background: #333;
+  background: var(--bg-hover);
   color: var(--text-primary);
 }
 
@@ -186,14 +213,15 @@
 }
 
 .track-solo.active {
-  background: #d4a017;
-  border-color: #d4a017;
-  color: var(--text-primary);
+  background: var(--color-solo);
+  border-color: var(--color-solo);
+  /* Amber is too light to carry white text; black reads at 8:1 */
+  color: var(--bg-primary);
 }
 
 .track-remove:hover {
-  background: #c0392b;
-  border-color: #c0392b;
+  background: var(--color-danger);
+  border-color: var(--color-danger);
   color: var(--text-primary);
 }
 
@@ -311,7 +339,7 @@
 }
 
 .bar-counter span {
-  color: var(--accent-primary);
+  color: var(--yellow);
   font-weight: bold;
 }
 
@@ -370,7 +398,7 @@
 }
 
 .practice-preset-btn:hover {
-  background: #333;
+  background: var(--bg-hover);
 }
 
 .practice-preset-btn.active {
@@ -406,7 +434,7 @@
 }
 
 .practice-adjust-btn:hover {
-  background: #333;
+  background: var(--bg-hover);
 }
 
 .practice-value {

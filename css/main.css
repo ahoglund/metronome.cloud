@@ -126,7 +126,7 @@ body {
 }
 
 .tempo-btn:hover {
-  background: #333;
+  background: var(--bg-hover);
   color: var(--text-primary);
 }
 
@@ -138,7 +138,7 @@ body {
   background: var(--accent-primary);
   border: none;
   color: var(--text-primary);
-  box-shadow: 0 0 20px rgba(255, 107, 53, 0.25);
+  box-shadow: 0 0 20px rgba(var(--accent-rgb), 0.25);
   transition: all var(--transition-medium);
   flex-shrink: 0;
   cursor: pointer;
@@ -152,7 +152,7 @@ body {
 }
 
 .play-button:hover {
-  box-shadow: 0 0 30px rgba(255, 107, 53, 0.4);
+  box-shadow: 0 0 30px rgba(var(--accent-rgb), 0.4);
   transform: scale(1.05);
 }
 
@@ -171,7 +171,7 @@ body {
 }
 
 .tap-button:hover {
-  background: #333;
+  background: var(--bg-hover);
   color: var(--text-primary);
 }
 
@@ -206,7 +206,7 @@ body {
 .add-track-button:hover {
   border-color: var(--accent-primary);
   color: var(--accent-primary);
-  background: rgba(255, 107, 53, 0.05);
+  background: rgba(var(--accent-rgb), 0.05);
 }
 
 /* ── Footer ── */
@@ -227,7 +227,7 @@ body {
 }
 
 .app-footer a:hover {
-  color: var(--accent-primary);
+  color: var(--color-link);
 }
 
 /* ── Global Resets ── */
@@ -238,7 +238,7 @@ a:link, a:visited {
 }
 
 a:hover {
-  color: var(--accent-primary);
+  color: var(--color-link);
   background: none;
 }
 
@@ -387,6 +387,35 @@ input, select {
   white-space: nowrap;
 }
 
+.seo-details summary {
+  cursor: pointer;
+  list-style: none;
+  color: var(--color-link);
+  font-size: 14px;
+  font-weight: 600;
+  width: fit-content;
+}
+
+.seo-details summary::-webkit-details-marker {
+  display: none;
+}
+
+.seo-details summary::before {
+  content: '+ ';
+}
+
+.seo-details[open] summary::before {
+  content: '\2212 ';
+}
+
+.seo-details summary:hover {
+  color: var(--text-primary);
+}
+
+.seo-details[open] summary {
+  margin-bottom: var(--spacing-md);
+}
+
 @media (max-width: 768px) {
   .seo-content {
     font-size: 13px;
@@ -400,13 +429,24 @@ input, select {
 
 /* ── Content pages ── */
 .seo-content a {
-  color: var(--accent-primary);
+  color: var(--color-link);
   text-decoration: underline;
   text-underline-offset: 2px;
 }
 
 .seo-content a:hover {
   color: var(--text-primary);
+}
+
+/* The app clears :focus outlines for mouse/touch; keyboard users still need one.
+   Element-qualified so this outranks the per-component `outline: none` rules. */
+a:focus-visible,
+button:focus-visible,
+select:focus-visible,
+input:focus-visible,
+[tabindex]:focus-visible {
+  outline: 2px solid var(--color-focus);
+  outline-offset: 2px;
 }
 
 .seo-more {
